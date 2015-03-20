@@ -86,6 +86,7 @@ public class UserLoader {
 		JSONUtils utils = JSONUtils.getInstance();			
 		List<UserVO> vo = utils.<UserVO>getListOfVO(json);
 		System.out.println("Done! you can find the json formatted file  at: "+input+".txt");
+		sc.close();
 	}
 
 	private static boolean checkForValidInput(String input, String[] validValues) {
