@@ -46,9 +46,8 @@ public class TestAPI {
 	
 	  @Test
 	  public void getToken() {
-		List<String>[] params = initializeTokenParams();
 		APIResponse response = new APIResponse();		
-		APIUtil.setRequestParams(params,response);
+		initializeTokenParams(response);
 		response.setRequestMethod(HttpMethod.POST);
 		setProxy(response);
 		APIUtil.processRequest(response);
@@ -58,20 +57,20 @@ public class TestAPI {
 	  }
 	  
 
-		private List<String>[] initializeTokenParams() {
-			List<String>[] params = new ArrayList[4];
-			params[0] = new ArrayList<String>();
-			params[0].add("Content-Type:application/x-www-form-urlencoded");
-			params[0].add("client_id:ab3ab1a476930b88d72779013ed15043");
-			params[0].add("client_secret:0df4d7214ea11ead");
-			params[1] = new ArrayList<String>();
-			params[1].add("username:mozaiqadmin");
-			params[1].add("grant_type:password");
-			params[1].add("password:test1234");
-			params[2] = new ArrayList<String>();
-			params[2].add("https://api.qa.covisint.com/cisco/cis/mozaiqdev/v1/oauth2/token");
-			return params;
+		private void initializeTokenParams(APIResponse response) {
+			List<String> params = new ArrayList<String>();
+			params.add("Content-Type:application/x-www-form-urlencoded");
+			params.add("client_id:ab3ab1a476930b88d72779013ed15043");
+			params.add("client_secret:0df4d7214ea11ead");
+			response.setHeaderParams(APIUtil.addSplitParams(params));
+			params  =  new ArrayList<String>();
+			params.add("username:mozaiqadmin");
+			params.add("grant_type:password");
+			params.add("password:test1234");
+			response.setRequestParams(APIUtil.addSplitParams(params));
+			response.setApiUrl("https://api.qa.covisint.com/cisco/cis/mozaiqdev/v1/oauth2/token");
 		}
+	
 		private void setProxy(APIResponse response) {
 			response.setHttpProxy(proxy);
 			response.setHttpsProxy(proxy);
