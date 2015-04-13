@@ -331,4 +331,10 @@ public class APIUtil {
 		 content.setHttpsProxy(proxy);	
 		return content;
 	}
+
+	public static void setProxy(APIResponse response, ProxyInfo proxy) {		
+			response.setHttpProxy(proxy);
+			response.setHttpsProxy(proxy);
+			setProxy(response);		
+	}
 }
