@@ -221,10 +221,12 @@ public class APIUtil {
 			}
 	}
 	private static void addHeaderParams(APIResponse content, HttpRequestBase httpPost) {
-		for (Entry<String, String> entry : content.getHeaderParams().entrySet())
-		{
-		    logger.debug(entry.getKey() + "/" + entry.getValue());
-		    httpPost.addHeader(entry.getKey(), entry.getValue());
+		if(null!=content.getHeaderParams()){
+			for (Entry<String, String> entry : content.getHeaderParams().entrySet())
+			{
+			    logger.debug(entry.getKey() + "/" + entry.getValue());
+			    httpPost.addHeader(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 	private static void addBodyParams(APIResponse content, HttpRequestBase httpPost){
@@ -248,13 +250,17 @@ public class APIUtil {
 		}
 	}
 	private static void addBodyParamsToUrl(APIResponse content){
-		String url = content.getApiUrl()+"?";
-		for (Entry<String, String> entry : content.getRequestParams().entrySet())
-		{
-		    logger.debug(entry.getKey() + "/" + entry.getValue());
-		    url+=entry.getKey()+"="+entry.getValue()+"&";
+		String url = content.getApiUrl();
+		if(null!=content.getRequestParams()){
+			url+="?";
+			for (Entry<String, String> entry : content.getRequestParams().entrySet())
+			{
+			    logger.debug(entry.getKey() + "/" + entry.getValue());
+			    url+=entry.getKey()+"="+entry.getValue()+"&";
+			}
+			url = url.substring(0, url.length()-1);
 		}
-		url = url.substring(0, url.length()-1);
+		
 		try {
 			content.setApiUrl(url);			
 		} catch (Exception e) {
