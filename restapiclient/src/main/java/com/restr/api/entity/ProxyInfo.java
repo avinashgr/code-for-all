@@ -1,4 +1,4 @@
-package com.covisint.cisco.api.entity;
+package com.restr.api.entity;
 
 public class ProxyInfo {
 	private String proxyDNS;

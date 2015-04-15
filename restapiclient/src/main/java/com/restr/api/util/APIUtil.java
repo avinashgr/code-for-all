@@ -1,4 +1,4 @@
-package com.covisint.cisco.api.util;
+package com.restr.api.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -34,11 +34,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import com.covisint.cisco.api.entity.APIResponse;
-import com.covisint.cisco.api.entity.ProxyInfo;
-import com.covisint.cisco.api.entity.APIResponse.HttpMethod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.restr.api.entity.APIResponse;
+import com.restr.api.entity.ProxyInfo;
+import com.restr.api.entity.APIResponse.HttpMethod;
 
 public class APIUtil {
 	

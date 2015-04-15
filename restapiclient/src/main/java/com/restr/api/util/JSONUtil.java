@@ -1,14 +1,14 @@
-package com.covisint.cisco.api.util;
+package com.restr.api.util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.covisint.cisco.api.entity.APIResponse;
-import com.covisint.cisco.api.entity.User;
-import com.covisint.cisco.api.entity.APIResponse.HttpMethod;
-import com.covisint.cisco.api.entity.ProxyInfo;
 import com.google.gson.Gson;
+import com.restr.api.entity.APIResponse;
+import com.restr.api.entity.ProxyInfo;
+import com.restr.api.entity.User;
+import com.restr.api.entity.APIResponse.HttpMethod;
 
 public class JSONUtil {
 

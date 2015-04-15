@@ -1,4 +1,4 @@
-package com.covisint.cisco.api.util;
+package com.restr.api.util;
 
 import java.io.File;
 import java.io.FileInputStream;
