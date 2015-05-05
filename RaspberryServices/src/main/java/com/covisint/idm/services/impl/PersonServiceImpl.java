@@ -35,7 +35,13 @@ public class PersonServiceImpl extends BaseService implements RestService<Person
 		// TODO Auto-generated method stub
 		
 	}
-
+	public Person activate(Person t,APIResponse r) {
+		r.setRequestMethod(HttpMethod.POST);
+		setProxy(r);
+		APIUtil.processRequest(r);
+		logger.debug("Response:" + r.getResponseContent());
+		return t;
+	}
 	public Person read(Person t,APIResponse r) {
 		r.setRequestMethod(HttpMethod.GET);
 		setProxy(r);
@@ -59,6 +65,9 @@ public class PersonServiceImpl extends BaseService implements RestService<Person
 		List<Person> lt= new Gson().fromJson(r.getResponseContent(), new TypeToken<List<Person>>(){}.getType());
 		return lt;
 	}
+	
+	
+	
 
 
 	public PersonServiceImpl initHeaderParams(APIResponse api) {

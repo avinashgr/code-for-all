@@ -13,7 +13,7 @@ public class BaseTestService {
 
 	@BeforeTest
 	public void beforeTest() {
-		String[] filenames = new String[] { "app-raspiservices.xml" };
+		String[] filenames = new String[] { "app-properties.xml" };
 		appContext = new ClassPathXmlApplicationContext(filenames);
 		logger.debug("Loaded the application context");
 	}

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -28,21 +29,21 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.restr.api.entity.APIResponse;
 import com.restr.api.entity.ProxyInfo;
-import com.restr.api.entity.APIResponse.HttpMethod;
+import com.restr.api.entity.http.HttpMethod;
 
 public class APIUtil {
 	
-	private static Logger  logger = Logger.getLogger(APIUtil.class);
+	private static Logger  logger = LoggerFactory.getLogger(APIUtil.class);
     /**
      * sets the proxy if proxyInfo has data
      * @param proxyInfo
@@ -105,7 +106,7 @@ public class APIUtil {
 	 * @param content
 	 */
 	private static void getRequest(APIResponse content) {
-		CloseableHttpClient httpclient = getAllCertsTrustingClient();
+		CloseableHttpClient httpclient = getAllCertsTrustingClient(content);
 		addBodyParamsToUrl(content);
 		HttpGet httpPost = new HttpGet(content.getApiUrl());
 		RequestConfig config = setProxy(content);
@@ -117,45 +118,73 @@ public class APIUtil {
 		readResponse(content, httpclient, httpPost);
 		
 	}
-	public static String formattedJSON(Object response){
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String json = gson.toJson(response);
-		return json;
-	}
+
 	/**
 	 * Processes the oauth content to do a get
 	 * @param content
 	 */
 	private static void postRequest(APIResponse content) {
-		CloseableHttpClient httpclient = getAllCertsTrustingClient();
+		CloseableHttpClient httpclient = getAllCertsTrustingClient(content);
 		HttpPost httpPost = new HttpPost(content.getApiUrl());
-		httpPost.setHeader("accept-charset", "ISO-8859-1,*,utf-8");
-		httpPost.setHeader("Accept", "text/html;charset=UTF-8");
 		RequestConfig config = setProxy(content);
 		if (null != config) {
 			httpPost.setConfig(config);
 		}
+		addJSONBody(content,httpPost);
 		addBodyParams(content, httpPost);
 		addHeaderParams(content, httpPost);
 		readResponse(content, httpclient, httpPost);
 	}
+	
+	/**
+	 * Processes the oauth content to do a get
+	 * @param content
+	 */
+	private static void putRequest(APIResponse content) {
+		CloseableHttpClient httpclient = getAllCertsTrustingClient(content);
+		HttpPut httpPost = new HttpPut(content.getApiUrl());
+		httpPost.setHeader("accept-charset", "ISO-8859-1,*,utf-8");
+		RequestConfig config = setProxy(content);
+		if (null != config) {
+			httpPost.setConfig(config);
+		}
+		addJSONBody(content,httpPost);
+		addBodyParams(content, httpPost);
+		addHeaderParams(content, httpPost);
+		readResponse(content, httpclient, httpPost);
+	}
+	private static void addJSONBody(APIResponse content, HttpRequestBase httpPost) {
+		if(null==content.getJsonBody() || content.getJsonBody().length()<=0){
+			return;
+		}
+		try{
+			StringEntity input = new StringEntity(content.getJsonBody());
+			if (httpPost instanceof HttpPost){
+				((HttpPost)httpPost).setEntity(input);
+			}else if(httpPost instanceof HttpPut){
+				((HttpPut)httpPost).setEntity(input);
+			}			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * 
 	 * @return
 	 */
-	private static CloseableHttpClient getAllCertsTrustingClient(){		
+	private static CloseableHttpClient getAllCertsTrustingClient(APIResponse content){		
 		CloseableHttpClient httpclient;
 		try{
-		    httpclient = trustAllCerts();
+		    httpclient = trustAllCerts(content);
 			return httpclient;
 		}catch(KeyStoreException e){
-			e.printStackTrace();
+			logger.error("Certificate trust failure: keystore: mostly a SSL encryption issue",e);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Certificate trust failure: no such alg: mostly a SSL encryption issue",e);
 		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Certificate trust failure: key managment: mostly a SSL encryption issue",e);
 		}
 		return HttpClients.createDefault(); 
 	}
@@ -167,7 +196,7 @@ public class APIUtil {
 	 * @throws KeyStoreException
 	 * @throws KeyManagementException
 	 */
-	private static CloseableHttpClient trustAllCerts()
+	private static CloseableHttpClient trustAllCerts(APIResponse content)
 			throws NoSuchAlgorithmException, KeyStoreException,
 			KeyManagementException {
 		CloseableHttpClient httpclient;
@@ -180,9 +209,13 @@ public class APIUtil {
 				return true;
 			}
 		 });
+
 		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
 		        builder.build());
+
 		httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+
+
 		return httpclient;
 	}
 	private static void readResponse(APIResponse content,
@@ -195,9 +228,6 @@ public class APIUtil {
 		            final HttpResponse response) throws ClientProtocolException, IOException {
 		        int status = response.getStatusLine().getStatusCode();
 		        Header[] headers =response.getAllHeaders();
-/*		        for(Header header :headers){
-		        	logger.debug("Name:"+header.getName()+"Value:"+header.getValue());
-		        }*/
 		        
 		        if (status >= 200 && status < 300) {
 		            HttpEntity entity = response.getEntity();
@@ -209,6 +239,8 @@ public class APIUtil {
 		    }
 
 		};
+		
+
 		String responseBody = httpclient.execute(httpPost,responseHandler);
 //		logger.debug("Responsebody:"+responseBody);
 		content.setResponseContent(responseBody);
@@ -221,7 +253,14 @@ public class APIUtil {
 			}
 	}
 	private static void addHeaderParams(APIResponse content, HttpRequestBase httpPost) {
+
 		if(null!=content.getHeaderParams()){
+			if (content.getUserName()!=null && (content.getUserName()).length() >0){
+				byte[] authEncBytes = Base64.encodeBase64((content.getUserName()+":"+content.getPassword()).getBytes());
+				String authStringEnc = new String(authEncBytes);
+				logger.debug("Base64 encoded auth string: " + authStringEnc);
+				content.getHeaderParams().put("Authorization","Basic "+authStringEnc);
+			}
 			for (Entry<String, String> entry : content.getHeaderParams().entrySet())
 			{
 			    logger.debug(entry.getKey() + "/" + entry.getValue());
@@ -231,10 +270,15 @@ public class APIUtil {
 	}
 	private static void addBodyParams(APIResponse content, HttpRequestBase httpPost){
 		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
-		for (Entry<String, String> entry : content.getRequestParams().entrySet())
-		{
-		    logger.debug(entry.getKey() + "/" + entry.getValue());
-		    nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+		if(null!=content.getJsonBody()&&content.getJsonBody().length()>0){
+			return;
+		}
+		if(null!=content.getRequestParams()){
+			for (Entry<String, String> entry : content.getRequestParams().entrySet())
+			{
+			    logger.debug(entry.getKey() + "/" + entry.getValue());
+			    nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+			}
 		}
 		try {
 			UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(nvps);
@@ -292,33 +336,16 @@ public class APIUtil {
 		}
 		return paramInfo;
 	}
-	/**
-	 * Processes the oauth content to do a get
-	 * @param content
-	 */
-	private static void putRequest(APIResponse content) {
-		CloseableHttpClient httpclient = getAllCertsTrustingClient();
-		HttpPut httpPost = new HttpPut(content.getApiUrl());
-		httpPost.setHeader("accept-charset", "ISO-8859-1,*,utf-8");
-		httpPost.setHeader("Accept", "text/html;charset=UTF-8");
-		RequestConfig config = setProxy(content);
-		if (null != config) {
-			httpPost.setConfig(config);
-		}
-		addBodyParams(content, httpPost);
-		addHeaderParams(content, httpPost);
-		readResponse(content, httpclient, httpPost);
-	}
+
 	
 	/**
 	 * Processes the oauth content to do a get
 	 * @param content
 	 */
 	private static void deleteRequest(APIResponse content) {
-		CloseableHttpClient httpclient = getAllCertsTrustingClient();
+		CloseableHttpClient httpclient = getAllCertsTrustingClient(content);
 		HttpDelete httpPost = new HttpDelete(content.getApiUrl());
 		httpPost.setHeader("accept-charset", "ISO-8859-1,*,utf-8");
-		httpPost.setHeader("Accept", "text/html;charset=UTF-8");
 		RequestConfig config = setProxy(content);
 		if (null != config) {
 			httpPost.setConfig(config);

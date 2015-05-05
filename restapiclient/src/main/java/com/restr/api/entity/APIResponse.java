@@ -2,19 +2,24 @@ package com.restr.api.entity;
 
 import java.util.Map;
 
+import com.restr.api.entity.http.HttpMethod;
+
 public class APIResponse {
 	//supported HTTP methods
-	public static enum HttpMethod {GET, POST, PUT,DELETE};
+
 	private ProxyInfo httpProxy;
 	private ProxyInfo httpsProxy;
 	private Map<String, String> headerParams;
 	private Map<String, String> requestParams;
+	private String jsonBody;
 	private Map<String, String> updateParams;
 	private HttpMethod requestMethod;
 	private String apiUrl;
 	private String formEncoding;
 	private String responseContent;
 	private String requestContent;
+	private String userName;
+	private String password;
 
 	
 	
@@ -77,6 +82,24 @@ public class APIResponse {
 	}
 	public void setUpdateParams(Map<String, String> updateParams) {
 		this.updateParams = updateParams;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getJsonBody() {
+		return jsonBody;
+	}
+	public void setJsonBody(String jsonBody) {
+		this.jsonBody = jsonBody;
 	}
 
 	

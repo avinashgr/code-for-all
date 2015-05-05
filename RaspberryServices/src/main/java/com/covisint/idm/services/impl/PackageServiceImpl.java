@@ -33,7 +33,8 @@ public class PackageServiceImpl extends BaseService implements RestService<Perso
 		setProxy(r);
 		APIUtil.processRequest(r);
 		logger.debug("Response:" + r.getResponseContent());
-		List<Packages> servicePkgs= new Gson().fromJson(r.getResponseContent(), new TypeToken<List<Packages>>(){}.getType());
+		List<Packages> servicePkgs = new ArrayList<Packages>();
+		servicePkgs.add(new Gson().fromJson(r.getResponseContent(),Packages.class ));
 		t.setPackages(servicePkgs);
 		return t;
 	}
@@ -61,6 +62,7 @@ public class PackageServiceImpl extends BaseService implements RestService<Perso
 	@Override
 	public PackageServiceImpl initHeaderParams(APIResponse api) {
 		api.getHeaderParams().put("Accept", "application/vnd.com.covisint.platform.package.grant.v1+json");
+		api.getHeaderParams().put("Content-type","application/vnd.com.covisint.platform.package.grant.v1+json");
 		return this;		
 	}
 

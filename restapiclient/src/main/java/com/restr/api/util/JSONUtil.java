@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.restr.api.entity.APIResponse;
 import com.restr.api.entity.ProxyInfo;
 import com.restr.api.entity.User;
-import com.restr.api.entity.APIResponse.HttpMethod;
+import com.restr.api.entity.http.HttpMethod;
 
 public class JSONUtil {
 
@@ -20,7 +22,11 @@ public class JSONUtil {
 		Map appData = gson.fromJson(content, Map.class);
 		return appData;
 	}
-
+	public String formattedJSON(Object response){
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(response);
+		return json;
+	}
 	public String getSampleJSON(String content) {
 		Gson gson = new Gson();
 		User user = new User();
@@ -100,4 +106,9 @@ public class JSONUtil {
 		 T token = (T) gson.fromJson(content, t.getClass());
 		 return token;
 	}
+/*	public static <T> List<T> unmarshalListResponse(String content, T t){
+		 Gson gson = new Gson();
+		 List<T> token =  gson.fromJson(content, new TypeToken<List<T>>(){}.getType());
+		 return token;
+	}*/
 }

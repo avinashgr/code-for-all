@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.covisint.idm.services.entities.packagev2.Grantee;
+import com.covisint.idm.services.entities.packagev2.Packages;
+import com.covisint.idm.services.entities.packagev2.ServicePackage;
 import com.covisint.idm.services.entities.personv2.Addresses;
 import com.covisint.idm.services.entities.personv2.Name;
 import com.covisint.idm.services.entities.personv2.Organization;
@@ -31,6 +34,8 @@ import com.restr.api.util.APIUtil;
 @Component("piUtilService")
 
 public class IDMAPIServiceImpl {
+	@Value( "${idm.exchange.package.id}")
+	private String IDM_EXCHANGE_PKG_ID;
 	@Value( "${idm.surname}" )
 	private String IDM_SURNAME;
 	@Value( "${idm.givenname}" )
@@ -65,6 +70,8 @@ public class IDMAPIServiceImpl {
 	private  String PERSONS_SERVICE_URL;
 	@Value( "${idm.person.password.account.service.url}" )
 	private  String PERSON_PASSWORD_ACCOUNT_SERVICE_URL;
+	@Value( "${idm.person.activate.service.url}" )
+	private  String ACTIVATE_PERSON_SERVICE_URL;
 	@Value( "${idm.device.id}" )
 	private  String PERSON_ID;
 	private static final Logger logger = LoggerFactory.getLogger(IDMAPIServiceImpl.class);
@@ -83,6 +90,9 @@ public class IDMAPIServiceImpl {
 	@Autowired
 	@Qualifier("passwordPolicyService")
 	private PasswordPolicyServiceImpl passwordPolicyService;
+	@Autowired
+	@Qualifier("twitterService")
+	private TwitterServiceImpl twitterService;	
 
 	
 	public String getToken(){
@@ -100,9 +110,16 @@ public class IDMAPIServiceImpl {
 		Token t= tokenService.initHeaderParams(resp).read(new Token(),resp);
 		Person p = createIDMPerson(t);
 		createPassword(p, t);
+		addServiceToPerson(p,t);
+		activatePerson(p,t);
+		twitterService.sendMessage(p, (p.getPackages().get(0)).getServicePackage(), true, p.getName().getGiven()+" I have registered");
 		return p;
 	}
 	
+	private void activatePerson(Person p, Token t) {
+		APIResponse resp = initializeActivatePersonParams(p,t);
+		personService.activate(p, resp);
+	}
 	/*
 	 * checks for services that need to be enabled
 	 */
@@ -132,17 +149,16 @@ public class IDMAPIServiceImpl {
 		List<String> params = new ArrayList<String>();
 		params.add("Authorization:"+"Bearer "+access_token);
 		response.setHeaderParams(APIUtil.addSplitParams(params));
-		response.setJsonBody(createNewPasswordPolicy(p));
-		
+		response.setJsonBody(createNewPasswordPolicy(p));		
 		response.setApiUrl(String.format(PERSON_PASSWORD_ACCOUNT_SERVICE_URL,p.getId()));
 		return response;
 	}
 
-	public List<Person> getPersonInfo(){
-		Token t = new Token();
-		APIResponse resp = initializeTokenParams();
-		t= tokenService.initHeaderParams(resp).read(t,resp);
-		resp = initializePersonSearchParams(t.getAccess_token());		
+	public List<Person> getPersonInfo(String t){
+		if(t!=null && t.isEmpty() ){
+			t= getToken();
+		}
+		APIResponse resp = initializePersonSearchParams(t);		
 		List<Person> p= personService.initHeaderParams(resp).search(new Person(), resp);
 		return p;
 	}
@@ -160,21 +176,33 @@ public class IDMAPIServiceImpl {
 		Token t = new Token();
 		APIResponse resp = initializeTokenParams();
 		t= tokenService.initHeaderParams(resp).read(t,resp);
-		Person p = new Person();
-		p.setId(PERSON_ID);
-		resp = initializePersonInfoParams(t.getAccess_token(),p);		
-		p= personService.initHeaderParams(resp).read(new Person(), resp);
-		resp = initializePersonServicesParams(t.getAccess_token(),p);
+		List<Person> lp = getPersonInfo(t.getAccess_token());
+		Person p =new Person();
+		if(null!=lp && lp.size()>0){
+			p = getPersonInfo(t.getAccess_token()).get(0);
+			resp = initializePersonInfoParams(t.getAccess_token(),p);		
+			p= personService.initHeaderParams(resp).read(new Person(), resp);
+			resp = initializePersonServicesParams(t.getAccess_token(),p);
+			p= packageService.initHeaderParams(resp).read(p, resp);
+		}else{
+			p.setPackages(new ArrayList<Packages>());
+		}
 		return p;
 	}
-	
+	public Person addServiceToPerson(Person p, Token t){
+		APIResponse resp = initializeAddPersonServicesParams(t.getAccess_token(),p);
+		p= packageService.initHeaderParams(resp).update(p, resp);
+		return p;
+	}
 	private APIResponse initializePersonSearchParams(String token) {
 		APIResponse response  =new APIResponse();
 		List<String> params = new ArrayList<String>();
 		params.add("Authorization:"+"Bearer "+token);
 		response.setHeaderParams(APIUtil.addSplitParams(params));
 		params = new ArrayList<String>();
-		params.add("username:"+DEVICE_NAME);
+		if(!DEVICE_NAME.isEmpty()){
+		 params.add("username:"+DEVICE_NAME);
+		}
 /*		params.add("page:2");
 		params.add("pageSize:2");*/
 		response.setRequestParams(APIUtil.addSplitParams(params));
@@ -192,6 +220,14 @@ public class IDMAPIServiceImpl {
 		params.add("pageSize:2");*/
 		response.setRequestParams(APIUtil.addSplitParams(params));
 		response.setApiUrl(PERSONS_SERVICE_URL+"/"+p.getId());
+		return response;
+	}
+	private APIResponse initializeActivatePersonParams(Person p, Token t) {
+		APIResponse response  =new APIResponse();
+		List<String> params = new ArrayList<String>();
+		params.add("Authorization:"+"Bearer "+t.getAccess_token());
+		response.setHeaderParams(APIUtil.addSplitParams(params));
+		response.setApiUrl(String.format(ACTIVATE_PERSON_SERVICE_URL, p.getId()));
 		return response;
 	}
 	
@@ -214,6 +250,49 @@ public class IDMAPIServiceImpl {
 		response.setHeaderParams(APIUtil.addSplitParams(params));
 		response.setApiUrl(String.format(PERSON_PACKAGE_SERVICE_URL,p.getId()));
 		return response;
+	}
+	
+	private APIResponse initializeAddPersonServicesParams(String token, Person p) {
+		APIResponse response  =new APIResponse();
+		List<String> params = new ArrayList<String>();
+		params.add("Authorization:"+"Bearer "+token);
+		response.setHeaderParams(APIUtil.addSplitParams(params));
+		response.setJsonBody(createPackage(p));
+		response.setApiUrl(String.format(PERSON_PACKAGE_SERVICE_URL+"/"+IDM_EXCHANGE_PKG_ID,p.getId()));
+		return response;
+	}
+	
+	private APIResponse initializeTwitter(Person p) {
+		APIResponse response  =new APIResponse();
+		List<String> params = new ArrayList<String>();
+		response.setJsonBody(createPackage(p));
+		response.setApiUrl(String.format(PERSON_PACKAGE_SERVICE_URL+"/"+IDM_EXCHANGE_PKG_ID,p.getId()));
+		return response;
+	}
+	private String createPackage(Person p) {
+		Packages pks = new Packages();
+		pks.setStatus("active");
+		pks.setVersion(1427792847876L);
+		pks.setGrantee(createGrantee(p));
+		pks.setServicePackage(createServicePackage(p));
+		return  new Gson().toJson(pks, Packages.class);
+	}
+	private ServicePackage createServicePackage(Person p) {
+		ServicePackage pkg =  new ServicePackage();
+		pkg.setId(IDM_EXCHANGE_PKG_ID);
+//		pkg.setRealm(p.getRealm());
+		return pkg;
+	}
+	private Grantee createGrantee(Person p) {
+		Grantee g = new Grantee();
+		g.setType("person");
+//		g.setRealm(p.getRealm());
+		g.setId(p.getId());
+		return g;
+	}
+	private Grantee createGrantee() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	private String createNewPerson() {
 		Person person =new Person();
@@ -252,6 +331,7 @@ public class IDMAPIServiceImpl {
 		Name name = new Name();
 		name.setGiven(IDM_GIVEN_NAME);
 		name.setSurname(IDM_SURNAME);
+		name.setMiddle("SYSTEM");
 		return name;
 	}
 	private String createNewPasswordPolicy(Person p) {

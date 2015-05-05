@@ -3,22 +3,25 @@ package com.covisint.cisco.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.covisint.cisco.api.entity.APIResponse;
-import com.covisint.cisco.api.entity.APIResponse.HttpMethod;
-import com.covisint.cisco.api.entity.ProxyInfo;
-import com.covisint.cisco.api.entity.UserToken;
-import com.covisint.cisco.api.util.APIUtil;
-import com.covisint.cisco.api.util.JSONUtil;
+import ch.qos.logback.classic.BasicConfigurator;
+import ch.qos.logback.classic.LoggerContext;
+
+import com.restr.api.entity.APIResponse;
+import com.restr.api.entity.ProxyInfo;
+import com.restr.api.entity.UserToken;
+import com.restr.api.entity.http.HttpMethod;
+import com.restr.api.util.APIUtil;
+import com.restr.api.util.JSONUtil;
 
 public class TestAPI {
 	
   private ProxyInfo proxy;
-  private static Logger  logger = Logger.getLogger(TestAPI.class);
+  private static Logger  logger = LoggerFactory.getLogger(TestAPI.class);
 
  
     /**
@@ -37,7 +40,7 @@ public class TestAPI {
 	}
 	@BeforeTest
 	 public void init(){
-		BasicConfigurator.configure();
+		BasicConfigurator.configure(new LoggerContext());
 		proxy =null;
 		//in Covisint VPN using proxy
 /*		proxy = new ProxyInfo().setProxyDNS(

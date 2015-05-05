@@ -31,7 +31,7 @@ public class TestTokenService extends BaseTestService {
 	@Test
 	public void getPersons() {
 		IDMAPIServiceImpl piUtilService = (IDMAPIServiceImpl) appContext.getBean("piUtilService");
-		List<Person> resp = piUtilService.getPersonInfo();
+		List<Person> resp = piUtilService.getPersonInfo("");
 		for (Iterator<Person> iterator = resp.iterator(); iterator.hasNext();) {
 			Person person = (Person) iterator.next();
 			logger.debug("Person:::: found:"+(person.getEmail()));			

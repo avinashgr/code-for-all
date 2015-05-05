@@ -10,7 +10,7 @@ public class Packages {
 
 	    private Grantee grantee;
 
-	    private String version;
+	    private Long version;
 
 	    public String getCreation ()
 	    {
@@ -52,12 +52,12 @@ public class Packages {
 	        this.grantee = grantee;
 	    }
 
-	    public String getVersion ()
+	    public Long getVersion ()
 	    {
 	        return version;
 	    }
 
-	    public void setVersion (String version)
+	    public void setVersion (Long version)
 	    {
 	        this.version = version;
 	    }
