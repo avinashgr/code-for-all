@@ -1,5 +1,9 @@
 package com.lambda.vo;
-
+/**
+ * Simple VO class for a test
+ * @author aranjalkar
+ *
+ */
 public class Person {
 	
 	private String firstName;
