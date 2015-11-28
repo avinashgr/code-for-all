@@ -1,0 +1,1 @@
+mvn -s maven_repo.xml install -DskipTests=true

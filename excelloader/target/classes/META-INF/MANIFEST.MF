@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Built-By: aranjalkar
+Build-Jdk: 1.7.0_17
+Main-Class: org.springframework.batch.core.launch.support.CommandLineJ
+ obRunner
+Created-By: Maven Integration for Eclipse
+
