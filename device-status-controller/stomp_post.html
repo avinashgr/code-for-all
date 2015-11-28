@@ -1,0 +1,42 @@
+<html>
+<head>
+<link href="/device-status-controller/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<script src= "/device-status-controller/bower_components/angular/angular.min.js"></script>
+<script src="/device-status-controller/bower_components/sockjs/sockjs.min.js"></script>
+<script src="/device-status-controller/bower_components/ng-stomp/ng-stomp.min.js"></script>
+<script src="/device-status-controller/bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="/device-status-controller/bower_components/stompie/stompie.js"></script>
+
+<script src="/device-status-controller/scripts/script_stomp.js"></script>
+<body ng-app="stompTester" >
+<div class="control-group" ng-controller="stompController" >
+	<div class="row">
+		<div class="panel panel-default well well-lg">
+		  <div class="panel-body">
+				<div class="row">
+				  <label class="col-md-2 control-label">Topic</label>
+				  <input type="text"  class="form-control" ng-model="topicToPost">
+		        </div>
+				<div class="row">
+				  <label class="col-md-2 control-label">Application ID</label>
+				  <input type="text"  class="form-control" ng-model="appId">
+		        </div>
+			    <div class="row">
+			      <label class="col-md-2 control-label">Message To Topic</label>
+				  <textarea type="text"  class="form-control" ng-model="stompText"></textarea>
+		        </div>
+		     	<div class="row">&nbsp;</div>
+				<div class="row">
+		                 <input type="submit" value="Get Data" class="btn btn-info" ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="processMessage()">
+		                 <input type="submit" value="Stop" class="btn btn-danger" ng-click="stopMessages()">
+				</div>
+				<div class="row">&nbsp;</div>
+				<div class="row alert-success">{{stompResponse}}</div>
+		  </div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "stomp-controller",
+  "version": "0.0.1",
+  "homepage": "https://bitbucket.org/avinashcov/iot-code",
+  "authors": [
+    "Avinash Ranjalkar"
+  ],
+  "description": "sends the stomp requests",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.0",
+    "bootstrap": "~3.3.5",
+    "ng-stomp": "~0.0.2",
+    "stompie": "~0.0.5"
+  }
+}

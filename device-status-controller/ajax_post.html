@@ -1,0 +1,42 @@
+<html>
+<head>
+<link href="/device-status-controller/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<script src= "/device-status-controller/bower_components/angular/angular.min.js"></script>
+
+<body ng-app="ajaxTester" >
+<div class="control-group" ng-controller="ajaxController" >
+	<div class="row">
+		<div class="panel panel-default well well-lg">
+		  <div class="panel-body">
+				<div class="row">
+				  <label class="col-md-2 control-label">Topic (try: lab/iot/prox)</label>
+				  <input type="text"  class="form-control" ng-model="topicToPost">
+		        </div>
+				<div class="row">
+				  <label class="col-md-2 control-label">Application ID</label>
+				  <input type="text"  class="form-control" ng-model="appId">
+		        </div>
+			    <div class="row">
+			      <label class="col-md-2 control-label">Message To Topic</label>
+				  <textarea type="text"  class="form-control" ng-model="ajaxText"></textarea>
+		        </div>
+		     	<div class="row">&nbsp;</div>
+				<div class="row">
+		                 <input type="submit" value="Get Data" class="btn btn-info" ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="postMessage()">
+		                 <input type="submit" value="Stop" class="btn btn-danger" ng-click="stopMessages()">
+				</div>
+				<div class="row">&nbsp;</div>
+				<div class="row alert-success">
+							<div ng-repeat="f in ajaxResponse">
+							   {{f.content}}
+							</div>
+				</div>
+		  </div>
+		</div>
+	</div>
+</div>
+</body>
+<script src="/device-status-controller/scripts/script_ajax.js"></script>
+</html>
