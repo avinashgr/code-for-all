@@ -1,8 +1,6 @@
-    var ajaxApp = angular.module('ajaxTester',[]);
-
 
     // create the controller and inject Angular's $scope
-    ajaxApp.controller('ajaxController',function($scope,$http, $timeout) {
+    iotapp.controller('ajaxController',function($scope,$http, $timeout) {
 		// create a message to display in our view
 		var greetingText;
 		$scope.value = 1;

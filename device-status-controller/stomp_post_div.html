@@ -1,16 +1,10 @@
-<html>
-<head>
-<link href="/device-status-controller/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-</head>
-<script src= "/device-status-controller/bower_components/angular/angular.min.js"></script>
 <script src="/device-status-controller/bower_components/sockjs/sockjs.min.js"></script>
 <script src="/device-status-controller/bower_components/ng-stomp/ng-stomp.min.js"></script>
 <script src="/device-status-controller/bower_components/stomp-websocket/lib/stomp.min.js"></script>
 <script src="/device-status-controller/bower_components/stompie/stompie.js"></script>
+<script src="/device-status-controller/scripts/script_stomp_div.js"></script>
 
-<script src="/device-status-controller/scripts/script_stomp.js"></script>
-<body ng-app="stompTester" >
-<div class="control-group" ng-controller="stompController" >
+<div  class="control-group" ng-show="tab.isSet(2)" ng-app="iotapp" ng-controller="stompController" >
 	<div class="row">
 		<div class="panel panel-default well well-lg">
 		  <div class="panel-body">
@@ -38,5 +32,5 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
+
+

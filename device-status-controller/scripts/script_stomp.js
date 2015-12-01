@@ -1,10 +1,5 @@
-// script.js
-
-    // create the module and name it stompTester
-    var stompApp = angular.module('stompTester',['ngStomp']);
-
     // create the controller and inject Angular's $scope
-    stompApp.controller('stompController',function($stomp,$scope) {
+    iotapp.controller('stompController',function($stomp,$scope) {
         // create a message to display in our view
 		var greetingText;
 
@@ -49,7 +44,4 @@
 		$scope.updateGreeting =  function(){
 			$scope.stompResponse= greetingText;
 		}
-
-
-
     });

@@ -1,0 +1,26 @@
+<html>
+<head>
+<link href="/device-status-controller/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<script src= "/device-status-controller/bower_components/angular/angular.min.js"></script>
+<script src="/device-status-controller/scripts/script.js"></script>
+<script src="/device-status-controller/scripts/script_ajax.js"></script>
+
+<script src="/device-status-controller/bower_components/sockjs/sockjs.min.js"></script>
+<script src="/device-status-controller/bower_components/ng-stomp/ng-stomp.min.js"></script>
+<script src="/device-status-controller/bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="/device-status-controller/bower_components/stompie/stompie.js"></script>
+<script src="/device-status-controller/scripts/script_stomp.js"></script>
+
+<body ng-app="iotapp" >
+  <section ng-controller="TabController as tab">
+        <ul class="nav nav-tabs">
+            <li ng-class="{active:tab.isSet(1)}"><a href ng-click="tab.setTab(1)">Ajax Reference</a></li>
+            <li ng-class="{active:tab.isSet(2)}"><a href ng-click="tab.setTab(2)">Stomp Reference</a></li>
+            <li ng-class="{active:tab.isSet(3)}"><a href ng-click="tab.setTab(3)">Protocol Tester</a></li>
+        </ul>
+		<div ng-include="'ajax_post_div.html'"></div>
+		<div ng-include="'stomp_post_div.html'"></div>
+   </section>
+</body>
+</html>

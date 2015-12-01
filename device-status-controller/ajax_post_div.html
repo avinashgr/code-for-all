@@ -1,11 +1,4 @@
-<html>
-<head>
-<link href="/device-status-controller/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-</head>
-<script src= "/device-status-controller/bower_components/angular/angular.min.js"></script>
-
-<body ng-app="ajaxTester" >
-<div class="control-group" ng-controller="ajaxController" >
+<div  class="control-group" ng-show="tab.isSet(1)" ng-app="iotapp" ng-controller="ajaxController" >
 	<div class="row">
 		<div class="panel panel-default well well-lg">
 		  <div class="panel-body">
@@ -37,6 +30,5 @@
 		</div>
 	</div>
 </div>
-</body>
-<script src="/device-status-controller/scripts/script_ajax.js"></script>
-</html>
+
+
