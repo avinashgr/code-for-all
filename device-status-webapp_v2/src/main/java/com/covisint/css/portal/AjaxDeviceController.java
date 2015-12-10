@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import com.google.gson.Gson;
  * @author aranjalkar
  *
  */
+@CrossOrigin({"https://presales-ilab.portal.covapp.io","http://device-status-ui.run.covapp.io","http://my.covapp.io:8080"})
 @Controller
 public class AjaxDeviceController{
 	final static Logger logger = LoggerFactory.getLogger(AjaxDeviceController.class);
@@ -42,7 +44,6 @@ public class AjaxDeviceController{
 		mqttClient.initializeMQTTConnection(device.getPublishToTopic(),device.getAppId());
 		mqttClient.publishCommand(device,device.getAppId());
 	}
-
 	@RequestMapping(value = "/devicelog",method = RequestMethod.GET)	
 	public @ResponseBody DeviceResponse[] chatlog(@RequestParam("topic") String topic, @RequestParam("appId") String appId ) {
 		mqttClient.initializeMQTTConnection(topic,appId);
@@ -66,7 +67,6 @@ public class AjaxDeviceController{
 			return (array);	
 		}
 	}
-	
 	@RequestMapping(value = "/stopLog", method = RequestMethod.POST)	
 	@ResponseStatus(value = HttpStatus.OK)
 	public void stopLogs(HttpEntity<String> httpEntity) {
