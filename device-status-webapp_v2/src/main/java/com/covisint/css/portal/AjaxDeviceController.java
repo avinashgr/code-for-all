@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.covisint.css.portal.utils.MessageValidator;
 import com.covisint.iot.stream.AjaxMQTTStreamClientImpl;
 import com.google.gson.Gson;
 /**
@@ -35,29 +36,31 @@ public class AjaxDeviceController{
     private AjaxMQTTStreamClientImpl mqttClient;
 
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
-	@ResponseStatus(value = HttpStatus.OK)
-	public void publish(HttpEntity<String> httpEntity) {
+	public @ResponseStatus HttpStatus publish(HttpEntity<String> httpEntity) {
 		logger.debug("Publishing message to device topic");
 		String deviceMessage = httpEntity.getBody();
 		DeviceMessage device = new Gson().fromJson(deviceMessage, DeviceMessage.class);
-		logger.info("The request body has:"+deviceMessage);
+		if(!MessageValidator.isMessageValid(device)){
+			return HttpStatus.BAD_REQUEST;
+		}
 		mqttClient.initializeMQTTConnection(device.getPublishToTopic(),device.getAppId());
 		mqttClient.publishCommand(device,device.getAppId());
+		return HttpStatus.OK;
 	}
 	@RequestMapping(value = "/devicelog",method = RequestMethod.GET)	
 	public @ResponseBody DeviceResponse[] chatlog(@RequestParam("topic") String topic, @RequestParam("appId") String appId ) {
+		if(!MessageValidator.checkForTopicAndApp(topic, appId)){
+			return createResponse("Invalid topic/app"); 
+		}
 		mqttClient.initializeMQTTConnection(topic,appId);
 		mqttClient.subscribeAndInitializeTopic(topic,appId);
 		Queue<DeviceResponse> deviceMessages = mqttClient.getMessages(topic);
 		List<DeviceResponse> devices = new ArrayList<DeviceResponse>();
 
 		if(null==deviceMessages || deviceMessages.isEmpty()){
-			DeviceResponse d = new DeviceResponse("No message yet");
-			DeviceResponse[] array = new DeviceResponse[1];
-			array[0] = d;
-			return array;
+			return createResponse("No message yet");
 		}else{
-			for (Iterator iterator = deviceMessages.iterator(); iterator.hasNext();) {
+			for (Iterator<DeviceResponse> iterator = deviceMessages.iterator(); iterator.hasNext();) {
 				DeviceResponse device = (DeviceResponse) iterator.next();
 				logger.info("Devicelog:logging device message:"+device.getContent());
 				devices.add(device);
@@ -66,6 +69,12 @@ public class AjaxDeviceController{
 			devices.toArray(array);
 			return (array);	
 		}
+	}
+	private DeviceResponse[] createResponse(String responseMessage) {
+		DeviceResponse d = new DeviceResponse(responseMessage);
+		DeviceResponse[] array = new DeviceResponse[1];
+		array[0] = d;
+		return array;
 	}
 	@RequestMapping(value = "/stopLog", method = RequestMethod.POST)	
 	@ResponseStatus(value = HttpStatus.OK)

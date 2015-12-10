@@ -5,7 +5,6 @@ package com.covisint.css.portal;
  *
  */
 public class DeviceResponse {
-
     private String content;
     public DeviceResponse(String content) {
            this.content = content;
@@ -13,5 +12,4 @@ public class DeviceResponse {
     public String getContent() {
       return content;
     }
-
 }

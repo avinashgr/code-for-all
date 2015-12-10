@@ -49,4 +49,11 @@ public class DeviceMessage {
 	public void setSubscribeToTopic(String subscribeToTopic) {
 		this.subscribeToTopic = subscribeToTopic;
 	}
+	@Override
+	public String toString() {
+		return "DeviceMessage [message=" + message + ", deviceId=" + deviceId + ", command=" + command
+				+ ", publishToTopic=" + publishToTopic + ", subscribeToTopic=" + subscribeToTopic + ", appId=" + appId
+				+ "]";
+	}
+	
 }
