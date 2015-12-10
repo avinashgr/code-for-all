@@ -3,7 +3,7 @@
         // create a message to display in our view
 		var greetingText;
 
-		$stomp.connect('/device-status-webapp/stomp/device', {}).then(function(){
+		$stomp.connect('http://device-status-webapp.run.covapp.io/stomp/device', {}).then(function(){
 			console.log('endpoint connected' + '\n');
 			$stomp.setDebug(function (args) {
 			     console.log('initiating stomp' + '\n');
@@ -12,7 +12,6 @@
 		});
         
         $scope.getMessages=function(){
-            alert('Herer');
             var data = {
                 message: $scope.stompText,
                 appId:$scope.appId,
@@ -31,8 +30,7 @@
         }
 
 		$scope.processMessage= function(){
-            alert('Here in Process Message');
-			var data = {
+            var data = {
 						message: $scope.stompText,
 						appId:$scope.appId,
 						publishToTopic: $scope.topicToPost

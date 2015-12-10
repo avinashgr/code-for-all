@@ -10,7 +10,7 @@
 		var polling = function() {
 			var value = $http({
 				method : 'GET',
-				url : '/device-status-webapp/devicelog?topic='+encodeURIComponent($scope.topicToPost)+'&appId='+encodeURIComponent($scope.appId)
+				url : 'http://device-status-webapp.run.covapp.io/devicelog?topic='+encodeURIComponent($scope.topicToPost)+'&appId='+encodeURIComponent($scope.appId)
 			});
 
 			value.success(function(data, status, headers, config) {
@@ -36,7 +36,7 @@
 						publishToTopic: $scope.topicToPost
 						};
 			console.log('processing ajax message' + '\n');
-			$http.post('/device-status-webapp/publish',data).success(function(data){
+			$http.post('http://device-status-webapp.run.covapp.io/publish',data).success(function(data){
 				console.log('posted ajax message' + '\n');
 			});
 		};
@@ -44,7 +44,7 @@
 			var data = {
 						publishToTopic: encodeURIComponent($scope.topicToPost)
 				};
-//      	$http.post('/device-status-webapp/stopLog',data).success(function(data){
+//      	$http.post('http://device-status-webapp.run.covapp.io/stopLog',data).success(function(data){
 //						console.log('posted stop message' + '\n');
 //			});
         }
