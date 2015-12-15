@@ -1,11 +1,12 @@
 package com.covisint.iot.stream;
 
+import java.util.Base64;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.covisint.css.portal.DeviceMessage;
 import com.covisint.iot.stream.test.RandomizeUtils;
 import com.google.gson.GsonBuilder;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class TestPublishSimple2 {
   public static void main(String[] args) {
@@ -42,7 +43,7 @@ private static void sendSampleMessage(MQTTStreamClientImpl sh) {
 private static String createSampleMessage() {
 	
 	String message = "{"+"\""+"SetTemperature"+":"+RandomizeUtils.randomInt(100)+","+"\""+"SetHumidity"+"\""+":13"+"}";
-	String decodedBytes = Base64.encode(message.getBytes());
+	String decodedBytes = Base64.getEncoder().encodeToString( message.getBytes());
 	return decodedBytes;
 }
 
