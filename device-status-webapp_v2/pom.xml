@@ -8,7 +8,7 @@
 	<repositories>
 		<repository>
 			<id>Eclipse Paho Repo</id>
-			<url>http://nexus.dtw.covisint.com/content/groups/public-snapshots</url>
+			<url>http://nexus.dtw.covisint.com/content/repositories/Central</url>
 		</repository>
 	</repositories>
 	<properties>
@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>org.eclipse.paho</groupId>
 			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<!-- logging artifacts -->
 		<dependency>
@@ -154,4 +154,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 </project>

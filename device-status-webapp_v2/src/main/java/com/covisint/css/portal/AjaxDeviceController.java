@@ -36,16 +36,17 @@ public class AjaxDeviceController{
     private AjaxMQTTStreamClientImpl mqttClient;
 
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
-	public @ResponseStatus HttpStatus publish(HttpEntity<String> httpEntity) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public void publish(HttpEntity<String> httpEntity) {
 		logger.debug("Publishing message to device topic");
 		String deviceMessage = httpEntity.getBody();
 		DeviceMessage device = new Gson().fromJson(deviceMessage, DeviceMessage.class);
 		if(!MessageValidator.isMessageValid(device)){
-			return HttpStatus.BAD_REQUEST;
+			logger.debug("Unable to publish message to device topic");
+		}else{
+			mqttClient.initializeMQTTConnection(device.getPublishToTopic(),device.getAppId());
+			mqttClient.publishCommand(device,device.getAppId());
 		}
-		mqttClient.initializeMQTTConnection(device.getPublishToTopic(),device.getAppId());
-		mqttClient.publishCommand(device,device.getAppId());
-		return HttpStatus.OK;
 	}
 	@RequestMapping(value = "/devicelog",method = RequestMethod.GET)	
 	public @ResponseBody DeviceResponse[] chatlog(@RequestParam("topic") String topic, @RequestParam("appId") String appId ) {

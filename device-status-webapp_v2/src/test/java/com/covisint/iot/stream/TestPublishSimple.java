@@ -29,14 +29,14 @@ private static void sendSampleMessage(MQTTStreamClientImpl sh) {
 
 	  MessageContent content = new MessageContent();
 	  content.setCommandId("CommandTSSequenceNum1100112");
-	  content.setDeviceId("7e57a97c-4e1a-49c6-a2b1-6304507c633e");
-	  content.setCommandId("9b6ea254-8089-445b-85a4-248c635e4d4e");
+	  content.setDeviceId("f6d4bb54-cb61-47d7-be2e-b8b3c81c3c28");
+	  content.setCommandId("5a59525e-106d-4ac0-9f0c-1dffe8b7a3cb");
 	  content.setMessage(createSampleMessage());
 	  content.setEncodingType("base64");
 
-	  deviceMessage.setPublishToTopic("12681cff-444c-4ee6-853e-3a122aefe559");
+	  deviceMessage.setPublishToTopic("f8dbc3f8-6140-471e-b18e-72ffa289f3a8");
 	  deviceMessage.setMessage((new GsonBuilder().disableHtmlEscaping().create()).toJson(content));
-	  deviceMessage.setAppId("6ef69644-d2f3-4fab-97b0-45550fb3e374");
+	  deviceMessage.setAppId("fa72d353-3ccb-4776-9529-767f3741454e");
 	  sh.initializeMQTTConnection(deviceMessage.getPublishToTopic(), deviceMessage.getAppId());
 	  sh.publishCommand(deviceMessage,deviceMessage.getAppId());
 }
