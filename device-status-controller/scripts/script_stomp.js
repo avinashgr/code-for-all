@@ -1,32 +1,36 @@
     // create the controller and inject Angular's $scope
     iotapp.controller('stompController',function($stomp,$scope) {
         // create a message to display in our view
-		var greetingText;
-
-		
-		
+		var greetingText;		
+		var appUrl='http://localhost:8080/device-status-webapp/';
 		var isDisconnected=false;
 
 		$scope.connect=function(){
-			var appUrl='http://localhost:8080/device-status-webapp/';
+			console.log('trying to connect');
+
 			$stomp.connect(appUrl+'stomp/device', {},$scope.callBackForErrors).then(function(){
 				console.log('endpoint connected' +'\n');
 				isDisconnected = false;
 				$stomp.setDebug(function (args) {
-				     console.log('initiating stomp' +args+ '\n');
+				     console.log('initiating stomp:' +args+ '\n');
+				     if(args.indexOf("connected to server undefined")>-1){
+				    	 greetingText = "Failed to connect. Please try again";
+				    	 $scope.updateGreeting(true);
+				     }
 	            });
 
 			});
 		}
-		$scope.connect();
+		$scope.connect();			
+		$scope.callBackForErrors=function(){
+				console.log('message from connection' + message+'\n');
+		};
         $scope.getMessages=function(){
+        	console.log('Connection status:'+isDisconnected);
         	if(true==isDisconnected){
         		$scope.connect();
-        	}
-			$scope.sleep(10000);
-			$scope.callBackForErrors=function(){
-				console.log('message from connection' + message+'\n');
-			};
+        	}		
+
 
             var data = {
                 message: $scope.stompText,
@@ -40,7 +44,7 @@
 				greetingText = greeting.content;
 				 $scope.$apply(function(){
 					   $scope.initiator = true;
-					   $scope.updateGreeting();
+					   $scope.updateGreeting(false);
 				   });
 			});
         }
@@ -62,8 +66,9 @@
 			isDisconnected=true;
 			console.log('endpoint disconnected' +'\n');
 		}
-		$scope.updateGreeting =  function(){
+		$scope.updateGreeting =  function(error){
 			$scope.stompResponse= greetingText;
+			$scope.stompError=error;
 		}
 		$scope.sleep=function sleep(milliseconds) {
 			  var start = new Date().getTime();

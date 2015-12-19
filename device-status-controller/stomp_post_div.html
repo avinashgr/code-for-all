@@ -22,7 +22,8 @@
 		                 <input type="submit" value="Stop" class="btn btn-danger" ng-click="stopMessages()">
 				</div>
 				<div class="row">&nbsp;</div>
-				<div class="row alert-success">{{stompResponse}}</div>
+				<div ng-if="!stompError" class="row alert-success">{{stompResponse}}</div>
+				<div ng-if="stompError" class="row alert-danger">{{stompResponse}}</div>
 		  </div>
 		</div>
 	</div>
