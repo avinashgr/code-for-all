@@ -3,6 +3,7 @@
     iotapp.controller('ajaxController',function($scope,$http, $timeout) {
 		// create a message to display in our view
 		var greetingText;
+		var appUrl='http://localhost:8080/device-status-webapp/';
 		$scope.value = 1;
 		var config ={
 		};
@@ -10,7 +11,7 @@
 		var polling = function() {
 			var value = $http({
 				method : 'GET',
-				url : 'http://device-status-webapp.run.covapp.io/devicelog?topic='+encodeURIComponent($scope.topicToPost)+'&appId='+encodeURIComponent($scope.appId)
+				url : appUrl+'devicelog?topic='+encodeURIComponent($scope.topicToPost)+'&appId='+encodeURIComponent($scope.appId)
 			});
 
 			value.success(function(data, status, headers, config) {
@@ -36,7 +37,7 @@
 						publishToTopic: $scope.topicToPost
 						};
 			console.log('processing ajax message' + '\n');
-			$http.post('http://device-status-webapp.run.covapp.io/publish',data).success(function(data){
+			$http.post(appUrl+'publish',data).success(function(data){
 				console.log('posted ajax message' + '\n');
 			});
 		};
@@ -44,7 +45,7 @@
 			var data = {
 						publishToTopic: encodeURIComponent($scope.topicToPost)
 				};
-//      	$http.post('http://device-status-webapp.run.covapp.io/stopLog',data).success(function(data){
+//      	$http.post('http://localhost:8080/device-status-webapp//stopLog',data).success(function(data){
 //						console.log('posted stop message' + '\n');
 //			});
         }

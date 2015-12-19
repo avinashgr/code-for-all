@@ -3,15 +3,15 @@
 		<div class="panel panel-default well well-lg">
 		  <div class="panel-body">
 				<div class="row">
-				  <label class="col-md-2 control-label">Topic (try: lab/iot/prox)</label>
+				  <label class="control-label">Topic (producerTopic for Post/consumerTopic for Get Data )</label>
 				  <input type="text"  class="form-control" ng-model="topicToPost">
 		        </div>
 				<div class="row">
-				  <label class="col-md-2 control-label">Application ID</label>
+				  <label class="control-label">Application ID (stream id for device or app)</label>
 				  <input type="text"  class="form-control" ng-model="appId">
 		        </div>
 			    <div class="row">
-			      <label class="col-md-2 control-label">Message To Topic</label>
+			      <label class="control-label">Message To Topic (only needed for Post)</label>
 				  <textarea type="text"  class="form-control" ng-model="ajaxText"></textarea>
 		        </div>
 		     	<div class="row">&nbsp;</div>
