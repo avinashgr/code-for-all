@@ -3,7 +3,8 @@
         // create a message to display in our view
 		var greetingText;		
 		var appUrl='http://localhost:8080/device-status-webapp/';
-		var isDisconnected=false;
+		$scope.toggleButton={name:'Disconnect'};
+		$scope.isDisconnected=false;
 
 		$scope.connect=function(){
 			console.log('trying to connect');
@@ -18,20 +19,16 @@
 				    	 $scope.updateGreeting(true);
 				     }
 	            });
-
+				$scope.isDisconnected=false;
 			});
 		}
-		$scope.connect();			
+		$scope.connect();	
+		
 		$scope.callBackForErrors=function(){
-				console.log('message from connection' + message+'\n');
+				console.log('message from connection:' + message+'\n');
 		};
         $scope.getMessages=function(){
         	console.log('Connection status:'+isDisconnected);
-        	if(true==isDisconnected){
-        		$scope.connect();
-        	}		
-
-
             var data = {
                 message: $scope.stompText,
                 appId:$scope.appId,
@@ -61,10 +58,16 @@
 			console.log('processing stomp message' + '\n');
 			$stomp.send("/app/stomp/device/publish", data);
 		};
-		$scope.stopMessages= function(){
-			$stomp.disconnect();
-			isDisconnected=true;
-			console.log('endpoint disconnected' +'\n');
+		$scope.toggle= function(){	
+			if(!$scope.isDisconnected){
+				$stomp.disconnect();
+				$scope.isDisconnected=true;
+				console.log('endpoint disconnected' +'\n');
+				$scope.toggleButton={name:'Connect'};
+			}else{
+				$scope.connect();
+				$scope.toggleButton={name:'Disconnect'};
+			}
 		}
 		$scope.updateGreeting =  function(error){
 			$scope.stompResponse= greetingText;
