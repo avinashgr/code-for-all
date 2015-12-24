@@ -69,6 +69,8 @@
 				$stomp.disconnect();
 				$scope.isDisconnected=true;
 				console.log('endpoint disconnected' +'\n');
+				greetingText=null;
+				$scope.updateGreeting(false);
 				$scope.toggleButton={name:'Connect'};
 			}else{
 				$scope.connect();
