@@ -11,15 +11,21 @@
 
 			$stomp.connect(appUrl+'stomp/device', {},$scope.callBackForErrors).then(function(){
 				console.log('endpoint connected' +'\n');
-				isDisconnected = false;
 				$stomp.setDebug(function (args) {
 				     console.log('initiating stomp:' +args+ '\n');
-				     if(args.indexOf("connected to server undefined")>-1){
-				    	 greetingText = "Failed to connect. Please try again";
+				     if(args.indexOf("Lost connection to")>-1){
+				    	 greetingText = "Unable to connect! Please click on connect and try again.";
 				    	 $scope.updateGreeting(true);
+				    	 $scope.isDisconnected=true;
+				    	 $scope.toggleButton={name:'Connect'};
+				     }else if(args.indexOf("connected to server")>-1){
+				    	 $scope.isDisconnected=false;
+				    	 $scope.toggleButton={name:'Disconnect'};
+				    	 greetingText="Success! Connected to server!";
+				    	 $scope.updateGreeting(false);
 				     }
 	            });
-				$scope.isDisconnected=false;
+				
 			});
 		}
 		$scope.connect();	
@@ -28,7 +34,7 @@
 				console.log('message from connection:' + message+'\n');
 		};
         $scope.getMessages=function(){
-        	console.log('Connection status:'+isDisconnected);
+        	console.log('Connection status:'+$scope.isDisconnected);
             var data = {
                 message: $scope.stompText,
                 appId:$scope.appId,
@@ -66,7 +72,6 @@
 				$scope.toggleButton={name:'Connect'};
 			}else{
 				$scope.connect();
-				$scope.toggleButton={name:'Disconnect'};
 			}
 		}
 		$scope.updateGreeting =  function(error){
