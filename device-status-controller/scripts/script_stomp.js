@@ -63,7 +63,7 @@
             };
 			$stomp.send("/app/stomp/device/publish", data);
 			console.log('processing stomp message' + '\n');	
-	    	$scope.greetingText="Posted the message to the server";
+	    	greetingText="Posted the message to the server";
 	    	$scope.updateGreeting(false);
 		};
 		$scope.toggle= function(){	
