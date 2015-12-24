@@ -15,7 +15,7 @@
 
 <body ng-app="iotapp" >
   <section ng-controller="TabController as tab">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-pills red">
             <li ng-class="{active:tab.isSet(1)}"><a href ng-click="tab.setTab(1)">Ajax Reference</a></li>
             <li ng-class="{active:tab.isSet(2)}"><a href ng-click="tab.setTab(2)">Stomp Reference</a></li>
             <li ng-class="{active:tab.isSet(3)}"><a href ng-click="tab.setTab(3)">Stomp SockJS Reference</a></li>

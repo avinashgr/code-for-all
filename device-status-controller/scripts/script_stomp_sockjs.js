@@ -53,13 +53,18 @@
         };
 
 		$scope.processMessage= function(){
-        	$scope.connect();
+			if(true==$scope.isDisconnected){
+				$scope.connect();
+			}
             var data = {
 						message: $scope.stompText,
 						appId:$scope.appId,
 						publishToTopic: $scope.topicToPost
             };
-			console.log('processing stomp message' + '\n');			
+            stompClient.send("/app/stomp/device/publish",{},JSON.stringify(data));
+			console.log('processing stomp message' + '\n');	
+	    	$scope.greetingText="Posted the message to the server";
+	    	$scope.updateGreeting(false);
 		};
 		$scope.toggle= function(){	
 			if(!$scope.isDisconnected){

@@ -4,20 +4,20 @@
 		<div class="panel panel-default well well-lg">
 		  <div class="panel-body">
 				<div class="row">
-				  <label class="col-md-2 control-label">Topic</label>
+				  <label class="control-label">Topic (producerTopic for Post/consumerTopic for Get Data )</label>
 				  <input type="text"  class="form-control" ng-model="topicToPost">
 		        </div>
 				<div class="row">
-				  <label class="col-md-2 control-label">Application ID</label>
+				  <label class="control-label">Application ID (stream id for device or app)</label>
 				  <input type="text"  class="form-control" ng-model="appId">
 		        </div>
 			    <div class="row">
-			      <label class="col-md-2 control-label">Message To Topic</label>
+			      <label class="control-label">Message To Topic (only needed for Post)</label>
 				  <textarea type="text"  class="form-control" ng-model="stompText"></textarea>
 		        </div>
 		     	<div class="row">&nbsp;</div>
-				<div class="row">
-		                 <input type="submit" value="Get Data" class="btn btn-info" ng-click="getMessages()">
+				<div class="row" >
+		                 <input type="submit" value="Get Data" class="btn btn-info"  ng-click="getMessages()">
 		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="processMessage()">
 		                 <input ng-model="toggleButton.name" name="toggleButton.name" ng-class="{'btn btn-danger':isDisconnected,'btn btn-success':!isDisconnected}" ng-click="toggle()">
 				</div>
