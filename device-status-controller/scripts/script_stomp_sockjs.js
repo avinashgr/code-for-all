@@ -3,6 +3,7 @@
         // create a message to display in our view
     	var socket;	
     	var stompClient;
+    	$scope.greetingText;		
 		var appUrl='http://localhost:8080/device-status-webapp/';
 		$scope.toggleButton={name:'Disconnect'};
 		$scope.isDisconnected=false;
@@ -16,9 +17,20 @@
 			stompClient = Stomp.over(socket);	
 			stompClient.connect();
 			stompClient.debug = function(str) {
-			    console.log("connected"+str);
-			}
-			$scope.isDisconnected=false;
+			    console.log("connected:"+str);
+			     if(str.indexOf("Lost connection to")>-1){
+			    	 $scope.greetingText = "Unable to connect! Please click on connect and try again.";
+			    	 $scope.updateGreeting(true);
+			    	 $scope.isDisconnected=true;
+			    	 $scope.toggleButton={name:'Connect'};
+			     }else if(str.indexOf("connected to server")>-1){
+			    	 $scope.isDisconnected=false;
+			    	 $scope.toggleButton={name:'Disconnect'};
+			    	 $scope.greetingText="Success! Connected to server!";
+			    	 $scope.updateGreeting(false);
+			    	 $scope.$apply();
+			     }
+			};
 		};
     	$scope.connect();			
 
@@ -32,8 +44,8 @@
 	            stompClient.send("/app/stomp/device/subscribe/"+$scope.topicToPost,{},JSON.stringify(data));
 	            stompClient.subscribe('/topic/'+$scope.topicToPost,function(greeting){
 					console.log('processing stomp message greeting' + JSON.parse(greeting.body).content);
-					greetingText = JSON.parse(greeting.body).content;
-					 $scope.$apply(function(){
+					$scope.greetingText = JSON.parse(greeting.body).content;
+					$scope.$apply(function(){
 						   $scope.initiator = true;
 						   $scope.updateGreeting(false);
 					   });
@@ -54,14 +66,15 @@
 				stompClient.disconnect();
 				$scope.isDisconnected=true;
 				console.log('endpoint disconnected' +'\n');
+				$scope.greetingText=null;
+				$scope.updateGreeting(false);
 				$scope.toggleButton={name:'Connect'};
 			}else{
 				$scope.connect();
-				$scope.toggleButton={name:'Disconnect'};
 			}
 		}
 		$scope.updateGreeting =  function(error){
-			$scope.stompResponse= greetingText;
+			$scope.stompResponse= $scope.greetingText;
 			$scope.stompError=error;
 		}
 		$scope.sleep=function sleep(milliseconds) {
