@@ -1,0 +1,41 @@
+{
+	"creator": "{{creator}}",
+	"realm": "{{prodRealm}}",
+	"creatorAppId": "{{creatorAppId}}",
+	"name": "tempurature",
+	"description": 
+	[
+		{
+			"lang": "en_us",
+			"text": "Temperature attribute"
+		}
+	],
+
+	"type": "decimal",
+	"isActive": true,
+	"isFrozen": false,
+	"items": 
+	[
+		{
+			"mangoes": 
+			[
+				{"indian": 
+					[
+						"alphonso",
+						"Gunturi"
+					]
+				},
+				"Gunturi"
+			],
+			"potatoes": 
+			[
+				{"idaho": 
+					[
+						"alphonso",
+						"Gunturi"
+					]
+				}
+			]
+		}
+	]
+}

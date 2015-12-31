@@ -1,0 +1,24 @@
+{
+    "creator": "{{creator}}",
+    "creatorAppId": "{{creatorAppId}}",
+    "realm": "{{prodRealm}}",
+    "name": "Condition Event",
+    "description": [
+        {
+            "lang": "en_US",
+            "text": "This is an event that is sent with condition information"
+        }    
+    ],
+    "eventFields": [
+        {
+            "name": "temp",
+            "type": "decimal"
+        },
+        {
+            "name": "humidity",
+            "type": "decimal"
+        }
+    ],
+    "isActive": true,
+    "tags": [ "weather", "conditional" ]
+}
