@@ -1,0 +1,39 @@
+{
+  "name": "stompie",
+  "version": "0.0.5",
+  "authors": [
+    "mrolafsson"
+  ],
+  "description": "Angular module for STOMP",
+  "main": "stompie.js",
+  "keywords": [
+    "angular",
+    "stomp",
+    "websocket",
+    "sockjs",
+    "topic",
+    "queue"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mrolafsson/stompie",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "sockjs": "latest",
+    "stomp-websocket": "latest"
+  },
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.5",
+    "commit": "b58b12cfb1a9f7a854aa2e00763bd22a66d8baa8"
+  },
+  "_source": "git://github.com/mrolafsson/stompie.git",
+  "_target": "~0.0.5",
+  "_originalSource": "stompie"
+}

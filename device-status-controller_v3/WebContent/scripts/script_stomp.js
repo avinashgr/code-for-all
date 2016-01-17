@@ -1,0 +1,97 @@
+    // create the controller and inject Angular's $scope
+    iotapp.controller('stompController',function($stomp,$scope) {
+        // create a message to display in our view
+		$scope.greetingText;		
+		//var appUrl='http://localhost:8080/device-status-webapp/';
+		var appUrl='https://device-status-webappn.run.covapp.io/';
+		$scope.toggleButton={name:'Disconnect'};
+		$scope.isDisconnected=false;
+
+		$scope.connect=function(){
+			console.log('trying to connect');
+
+			$stomp.connect(appUrl+'stomp/device', {},$scope.callBackForErrors).then(function(){
+				console.log('endpoint connected' +'\n');
+		    	 $scope.greetingText="Connected to server!";
+		    	 $scope.updateGreeting(false);
+				$stomp.setDebug(function (args) {
+				     console.log('initiating stomp:' +args+ '\n');
+				     if(args.indexOf("Lost connection to")>-1){
+				    	 $scope.greetingText = "Unable to connect! Please click on connect and try again.";
+				    	 $scope.updateGreeting(true);
+				    	 $scope.isDisconnected=true;
+				    	 $scope.toggleButton={name:'Connect'};
+				     }else if(args.indexOf("connected to server")>-1){
+				    	 $scope.isDisconnected=false;
+				    	 $scope.toggleButton={name:'Disconnect'};
+				    	 $scope.greetingText="Success! Connected to server!";
+				    	 $scope.updateGreeting(false);
+				    	 $scope.$apply();
+				     }
+	            });
+				
+			});
+		}
+			
+		$scope.connect();
+		$scope.callBackForErrors=function(){
+				console.log('message from connection:' + message+'\n');
+		};
+        $scope.getMessages=function(){
+        	console.log('Connection status:'+$scope.isDisconnected);
+            var data = {
+                message: $scope.stompText,
+                appId:$scope.appId,
+                publishToTopic: $scope.topicToPost
+            };
+			console.log('processing stomp message' + '\n');
+			$stomp.send("/app/stomp/device/subscribe/"+$scope.topicToPost, data);
+            var subscription  = $stomp.subscribe('/topic/'+$scope.topicToPost,function(greeting){
+				console.log('processing stomp message greeting' + greeting.content);
+				$scope.greetingText = greeting.content;
+				 $scope.$apply(function(){
+					   $scope.initiator = true;
+					   $scope.updateGreeting(false);
+				   });
+			});
+        }
+
+		$scope.processMessage= function(){
+        	if(true==$scope.isDisconnected){
+        		$scope.connect();
+        	}
+            var data = {
+						message: $scope.stompText,
+						appId:$scope.appId,
+						publishToTopic: $scope.topicToPost
+            };
+			$stomp.send("/app/stomp/device/publish", data);
+			console.log('processing stomp message' + '\n');	
+	    	$scope.greetingText="Posted the message to the server";
+	    	$scope.updateGreeting(false);
+		};
+		$scope.toggle= function(){	
+			if(!$scope.isDisconnected){
+				$stomp.disconnect();
+				$scope.isDisconnected=true;
+				console.log('endpoint disconnected' +'\n');
+				$scope.greetingText=null;
+				$scope.updateGreeting(false);
+				$scope.toggleButton={name:'Connect'};
+			}else{
+				$scope.connect();
+			}
+		}
+		$scope.updateGreeting =  function(error){
+			$scope.stompResponse= $scope.greetingText;
+			$scope.stompError=error;
+		}
+		$scope.sleep=function sleep(milliseconds) {
+			  var start = new Date().getTime();
+			  for (var i = 0; i < 1e7; i++) {
+			    if ((new Date().getTime() - start) > milliseconds){
+			      break;
+			    }
+			  }
+		}
+    });

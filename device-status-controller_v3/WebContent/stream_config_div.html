@@ -1,0 +1,44 @@
+<style>
+html, body, .container {
+  height: 75%;
+}
+textarea {
+  min-height:110px;
+}
+.large{
+  height: 70%;
+}
+</style>
+<div  class="control-group" ng-show="mc.isSet(1)"  ng-app="iotapp" ng-controller="configController" >
+		<div class="panel panel-default well">
+		  <div class="panel-body">
+		  	<div class="row alert alert-info">
+		        <b>Note:</b>
+To read config of a stream:<br>
+1. Enter <b>Stream ID</b> id assigned to the stream in Stream ID field and click Get Config.<br>
+To add a new config:<br>
+2. Enter <b>Stream Config JSON</b> to the Stream Info To Add and click Add Config<br>		        
+		        </div>
+				<div class="row">
+				  <label class="control-label">Stream ID (needed while getting stream info)</label>
+				  <input type="text"  class="form-control" ng-model="appId">
+		        </div>
+			    <div class="row">
+			      <label class="control-label">Stream Info (only needed to add a Stream Config)</label>
+				  <textarea type="text"  class="form-control large" ng-model="ajaxText"></textarea>
+		        </div>
+		     	<div class="row">&nbsp;</div>
+				<div class="row">
+		                 <input type="submit" value="Get Config" class="btn btn-info" ng-click="getConfig()">
+		                 <input type="submit" value="Post Config" class="btn btn-primary" ng-click="postConfig()">
+		                 <input type="submit" value="Delete Config" class="btn btn-danger" ng-click="deleteConfig()">
+				</div>
+				<div class="row">&nbsp;</div>
+				<div ng-if="!stompError" class="row alert-success">{{stompResponse}}</div>
+				<div ng-if="stompError" class="row alert-danger">{{stompResponse}}</div>
+
+		  </div>
+		</div>
+</div>
+
+

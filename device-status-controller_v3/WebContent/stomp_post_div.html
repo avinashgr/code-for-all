@@ -1,0 +1,37 @@
+
+<div  class="control-group" ng-show="mc.isSet(3)" ng-app="iotapp" ng-controller="stompController" >
+		<div class="panel panel-default well">
+		  <div class="panel-body">
+		  	<div class="row alert alert-info">
+		        <b>Note:</b> Make sure the connection is alive. Clicking Disconnect and Connect again will help.<p>
+To read data from a topic:<br>
+1. Enter <b>consumer topic</b> id assigned to the stream in the Topic field, stream id in the Stream ID field and click Get Data.<br>
+To post message to a topic:<br>
+2. Enter <b>producer topic</b> id assigned to the stream in the Topic field, stream id in the Stream ID field, message is added to the Message To Topic and click Get Data.<br>		        
+		        </div>
+				<div class="row">
+				  <label class="control-label">Topic</label>
+				  <input type="text"  class="form-control" ng-model="topicToPost">
+		        </div>
+				<div class="row">
+				  <label class="control-label">Stream ID</label>
+				  <input type="text"  class="form-control" ng-model="appId">
+		        </div>
+			    <div class="row">
+			      <label class="control-label">Message To Topic (only needed for Post)</label>
+				  <textarea type="text"  class="form-control" ng-model="stompText"></textarea>
+		        </div>
+		     	<div class="row">&nbsp;</div>
+				<div class="row" >
+		                 <input type="submit" value="Get Data" class="btn btn-info"  ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="processMessage()">
+		                 <input ng-model="toggleButton.name" name="toggleButton.name" ng-class="{'btn btn-danger':isDisconnected,'btn btn-success':!isDisconnected}" ng-click="toggle()">
+				</div>
+				<div class="row">&nbsp;</div>
+				<div ng-if="!stompError" class="row alert-success">{{stompResponse}}</div>
+				<div ng-if="stompError" class="row alert-danger">{{stompResponse}}</div>
+		  </div>
+		</div>
+</div>
+
+

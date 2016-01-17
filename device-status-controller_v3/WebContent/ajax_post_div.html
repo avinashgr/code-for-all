@@ -1,0 +1,39 @@
+<div  class="control-group" ng-show="mc.isSet(2)" ng-app="iotapp" ng-controller="ajaxController" >
+		<div class="panel panel-default well">
+		  <div class="panel-body">
+		  	<div class="row alert alert-info">
+		        <b>Note:</b>
+To read data from a topic:<br>
+1. Enter <b>consumer topic</b> id assigned to the stream in the Topic field, stream id in the Stream ID field and click Get Data.<br>
+To post message to a topic:<br>
+2. Enter <b>producer topic</b> id assigned to the stream in the Topic field, stream id in the Stream ID field, message is added to the Message To Topic and click Get Data.<br>		        
+		        </div>
+				<div class="row">
+				  <label class="control-label">Topic</label>
+				  <input type="text"  class="form-control" ng-model="topicToPost">
+		        </div>
+				<div class="row">
+				  <label class="control-label">Stream ID</label>
+				  <input type="text"  class="form-control" ng-model="appId">
+		        </div>
+			    <div class="row">
+			      <label class="control-label">Message To Topic (only needed for Post)</label>
+				  <textarea type="text"  class="form-control" ng-model="ajaxText"></textarea>
+		        </div>
+		     	<div class="row">&nbsp;</div>
+				<div class="row">
+		                 <input type="submit" value="Get Data" class="btn btn-info" ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="postMessage()">
+		                 <input type="submit" value="Stop" class="btn btn-danger" ng-click="stopMessages()">
+				</div>
+				<div class="row">&nbsp;</div>
+				<div class="row alert-success">
+							<div ng-repeat="f in ajaxResponse">
+							   {{f.content}}
+							</div>
+				</div>
+		  </div>
+		</div>
+</div>
+
+

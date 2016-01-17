@@ -1,0 +1,128 @@
+<head>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link href="./bower_components/angular-material/angular-material.css" rel="stylesheet" />
+    <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/app.css"/>
+        <style type="text/css">
+            [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+              display: none !important;
+            }
+
+            .menuBtn {
+              background-color: transparent;
+              border: none;
+              height: 38px;
+              margin: 16px 0 0 16px;
+              width: 16px;
+            } 
+            md-toolbar h1 {
+              font-weight: normal;
+            }
+            md-list .md-button {
+              color: inherit;
+              font-weight: 150;
+              text-align: left;
+              margin: 16px 0 0 16px;
+              width: 100%;
+            }
+            md-sidenav, 
+            md-sidenav.md-locked-open, 
+            md-sidenav.md-closed.md-locked-open-add-active {
+                min-width: 200px !important;
+                width: 20vw !important;
+                max-width: 300px !important;
+            } 
+            
+    </style>
+    <style>
+            .btn {
+                padding: 5px 5px 5px 5px;
+                border: 0 none;
+                font-weight: 10;
+            }
+    </style>
+</head>
+
+<body ng-app="iotapp" ng-cloak layout="row" ng-controller="MainController as mc">
+<!-- Container #3 -->
+<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')" layout="column">
+<md-toolbar layout="row" class="md-whiteframe-z1">
+  <h1>Options</h1>
+</md-toolbar>
+<md-list role="list" layout="row">
+
+    <!-- List item #1 -->
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(1)">
+          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
+          Lia Luogo
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(2)">
+          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
+          Lia Luogo
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(3)">
+          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
+          Lia Luogo
+        </md-button>
+    </<md-list-item>
+      <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(4)">
+          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
+          Lia Luogo
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button>
+          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
+          Lia Luogo
+        </md-button>
+    </<md-list-item>          
+</md-list>
+</md-sidenav>
+
+
+<!-- Container #2 -->
+<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z1" >
+
+     <md-toolbar layout="row" class="md-whiteframe-z2">
+        <md-button class="menu" hide-gt-sm ng-click="mc.toggleList()" aria-label="Show User List">
+            <md-icon md-svg-icon="menu" ></md-icon>
+          </md-button>
+      <h1>Angular Material - IOT App</h1>
+    </md-toolbar>
+        <!-- Container #4 -->
+   <md-content flex >    
+        <md-content flex id="content" layout="row">
+                 <md-content >
+                     <ng-include flex src="'stream_config_div.html'"></ng-include>
+                     <ng-include flex src="'stomp_post_div.html'"></ng-include>
+                     <ng-include flex src="'stomp_post_sockjs_div.html'"></ng-include>
+                     <ng-include flex src="'ajax_post_div.html'"></ng-include>
+                 </md-content>
+        </md-content>
+    </md-content>
+</div>
+<script src= "./bower_components/angular/angular.js"></script>
+<script src="./bower_components/angular-animate/angular-animate.js" type="text/javascript" ></script>
+<script src="./bower_components/angular-aria/angular-aria.js" type="text/javascript" ></script>
+<script src="./bower_components/angular-material/angular-material.js" type="text/javascript" ></script>
+
+<script src="./scripts/script.js"></script>
+<script src="./scripts/script_ajax.js"></script>
+<script src="./bower_components/sockjs-client/dist/sockjs-1.0.3.min.js"></script>
+<script src="./bower_components/ng-stomp/ng-stomp.min.js"></script>
+<script src="./bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="./bower_components/stompie/stompie.js"></script>
+<script src="./scripts/script_stomp.js"></script>
+<script src="./scripts/script_stomp_sockjs.js"></script>
+<script src="./scripts/script_config.js"></script>
+
+</body>
+</html>
