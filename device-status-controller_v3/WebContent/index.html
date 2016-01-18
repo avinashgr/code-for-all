@@ -15,22 +15,31 @@
               margin: 16px 0 0 16px;
               width: 16px;
             } 
+            .md-whiteframe-z2{
+               background-color:lightsteelblue
+            }
             md-toolbar h1 {
               font-weight: normal;
             }
             md-list .md-button {
               color: inherit;
-              font-weight: 150;
+              font-weight: 60;
               text-align: left;
               margin: 16px 0 0 16px;
               width: 100%;
+              font-size: 0.750em;
+            }
+            md-list .md-button h1{
+              color:darkslategray;
+             font-size: 1.250em;
+             
             }
             md-sidenav, 
             md-sidenav.md-locked-open, 
             md-sidenav.md-closed.md-locked-open-add-active {
-                min-width: 200px !important;
+                min-width: 150px !important;
                 width: 20vw !important;
-                max-width: 300px !important;
+                max-width: 200px !important;
             } 
             
     </style>
@@ -40,6 +49,7 @@
                 border: 0 none;
                 font-weight: 10;
             }
+
     </style>
 </head>
 
@@ -48,7 +58,7 @@
 <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
                 md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')" layout="column">
-<md-toolbar layout="row" class="md-whiteframe-z1">
+<md-toolbar layout="row" class="md-whiteframe-z2">
   <h1>Options</h1>
 </md-toolbar>
 <md-list role="list" layout="row">
@@ -56,46 +66,41 @@
     <!-- List item #1 -->
     <md-list-item layout="column">
         <md-button ng-click="mc.setItem(1)">
-          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
-          Lia Luogo
+         <md-icon md-svg-src="./assets/svg/gear-glyph.svg" class="avatar"></md-icon>
+            <h1>Configure</h1>
         </md-button>
     </<md-list-item>
     <md-list-item layout="column">
         <md-button ng-click="mc.setItem(2)">
-          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
-          Lia Luogo
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+           <h1>Ajax Reference</h1>
         </md-button>
     </<md-list-item>
     <md-list-item layout="column">
         <md-button ng-click="mc.setItem(3)">
-          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
-          Lia Luogo
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+          <h1>Stompie Reference</h1>
         </md-button>
     </<md-list-item>
       <md-list-item layout="column">
         <md-button ng-click="mc.setItem(4)">
-          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
-          Lia Luogo
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+            <h1>SockJS Reference</h1>
         </md-button>
     </<md-list-item>
-    <md-list-item layout="column">
-        <md-button>
-          <md-icon md-svg-src="./assets/svg/avatar-1.svg" class="avatar"></md-icon>
-          Lia Luogo
-        </md-button>
-    </<md-list-item>          
+      
 </md-list>
 </md-sidenav>
 
 
 <!-- Container #2 -->
-<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z1" >
+<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" >
 
      <md-toolbar layout="row" class="md-whiteframe-z2">
         <md-button class="menu" hide-gt-sm ng-click="mc.toggleList()" aria-label="Show User List">
-            <md-icon md-svg-icon="menu" ></md-icon>
+            <md-icon md-svg-src="./assets/svg/ic_menu_24px.svg" ></md-icon>
           </md-button>
-      <h1>Angular Material - IOT App</h1>
+      <h1>IOT Test Utility</h1>
     </md-toolbar>
         <!-- Container #4 -->
    <md-content flex >    

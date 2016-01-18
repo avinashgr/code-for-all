@@ -3,7 +3,7 @@
     iotapp.controller('configController',function($scope,$http, $timeout) {
 		// create a message to display in our view
     	$scope.greetingText;
-    	var appUrl='http://localhost:8080/';
+    	var appUrl='https://device-status-webappn.run.covapp.io/';
 		$scope.value = 1;
 		var config ={
 		};
