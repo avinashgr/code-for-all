@@ -1,0 +1,159 @@
+<head>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="assets/dial/vendorcss.css">
+
+    <link href="./bower_components/angular-material/angular-material.css" rel="stylesheet" />
+    <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/app.css"/>
+        <style type="text/css">
+            [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+              display: none !important;
+            }
+
+            .menuBtn {
+              background-color: transparent;
+              border: none;
+              height: 38px;
+              margin: 16px 0 0 16px;
+              width: 16px;
+            } 
+            .md-whiteframe-z2{
+               background-color:beige
+            }
+            md-toolbar h1 {
+              font-weight: normal;
+              white-space:nowrap;
+            }
+            md-list .md-button {
+              color: inherit;
+              font-weight: 60;
+              text-align: left;
+              margin: 16px 0 0 16px;
+              width: 100%;
+              font-size: 0.750em;
+            }
+            md-list .md-button h1{
+              color:darkslategray;
+             font-size: 1.250em;
+            }
+            md-sidenav, 
+            md-sidenav.md-locked-open, 
+            md-sidenav.md-closed.md-locked-open-add-active {
+                min-width: 150px !important;
+                width: 20vw !important;
+                max-width: 200px !important;
+            } 
+            md-content{
+               background-color:grey 
+            }
+    </style>
+    <style>
+            .btn {
+                padding: 5px 5px 5px 5px;
+                border: 0 none;
+                font-weight: 10;
+            }
+
+    </style>
+</head>
+
+<body ng-app="iotapp" ng-cloak layout="row" ng-controller="MainController as mc">
+<!-- Container #3 -->
+<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')" layout="column">
+<md-toolbar layout="row" class="md-whiteframe-z2">
+  <h1>Options</h1>
+</md-toolbar>
+<md-list role="list" layout="row">
+
+    <!-- List item #1 -->
+<!--
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(6)">
+         <md-icon md-svg-src="./assets/svg/gear-glyph.svg" class="avatar"></md-icon>
+            <h1>Create Stream</h1>
+        </md-button>
+    </<md-list-item>
+-->
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(1)">
+         <md-icon md-svg-src="./assets/svg/gear-glyph.svg" class="avatar"></md-icon>
+            <h1>Configure</h1>
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(2)">
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+           <h1>Ajax Reference</h1>
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(3)">
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+          <h1>Stompie Reference</h1>
+        </md-button>
+    </<md-list-item>
+      <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(4)">
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+            <h1>SockJS Reference</h1>
+        </md-button>
+    </<md-list-item>
+    <md-list-item layout="column">
+        <md-button ng-click="mc.setItem(5)">
+          <md-icon md-svg-src="./assets/svg/ic_share_24px.svg" class="avatar"></md-icon>
+            <h1>UI Widgets</h1>
+        </md-button>
+    </<md-list-item>
+      
+</md-list>
+</md-sidenav>
+
+
+<!-- Container #2 -->
+<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" >
+
+     <md-toolbar layout="row" class="md-whiteframe-z2">
+        <md-button class="menu" hide-gt-sm ng-click="mc.toggleList()" aria-label="Show User List">
+            <md-icon md-svg-src="./assets/svg/ic_menu_24px.svg" ></md-icon>
+          </md-button>
+      <h1><md-icon class="menulogo" md-svg-src="./assets/svg/icon.svg"></md-icon>IOT Tester</h1>
+    </md-toolbar>
+        <!-- Container #4 -->
+   <md-content flex>    
+        <md-content  id="content" layout="column"  >
+                 <md-content>
+                     <ng-include flex src="'stream_config_div.html'"></ng-include>
+                     <ng-include flex src="'stomp_post_div.html'"></ng-include>
+                     <ng-include flex src="'stomp_post_sockjs_div.html'"></ng-include>
+                     <ng-include flex src="'ajax_post_div.html'"></ng-include>
+                     <ng-include flex src="'ajax_dial_div.html'"></ng-include>
+<!--                     <ng-include flex src="'stream_creator_div.html'"></ng-include>-->
+                 </md-content>
+        </md-content>
+    </md-content>
+</div>
+<script src= "./bower_components/angular/angular.js"></script>
+<script src="./bower_components/angular-animate/angular-animate.js" type="text/javascript" ></script>
+<script src="./bower_components/angular-aria/angular-aria.js" type="text/javascript" ></script>
+<script src="./bower_components/angular-material/angular-material.js" type="text/javascript" ></script>
+
+<script src="./scripts/script.js"></script>
+<script src="./scripts/script_ajax.js"></script>
+<script src="./bower_components/sockjs-client/dist/sockjs-1.0.3.min.js"></script>
+<script src="./bower_components/ng-stomp/ng-stomp.min.js"></script>
+<script src="./bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="./bower_components/stompie/stompie.js"></script>
+<script src="./scripts/script_stomp.js"></script>
+<script src="./scripts/script_stomp_sockjs.js"></script>
+<script src="./scripts/script_config.js"></script>
+<!--<script src="./scripts/script_create.js"></script>-->
+<!-- Added for the damn dial-->
+<script src="./scripts/dial/script_dial.js"></script>
+<script src="./scripts/dial/vendorjs.js"></script>
+<script src="./scripts/dial/cuigaugejs.js"></script>
+<script src="./scripts/dial/cuisparklinejs.js"></script>
+<script src="./scripts/dial/cuijs.js"></script>
+</body>
+</html>

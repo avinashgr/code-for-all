@@ -4,7 +4,7 @@
     	var socket;	
     	var stompClient;
     	$scope.greetingText;		
-		var appUrl='https://device-status-webappn.run.covapp.io/';
+		var appUrl='https://device-status-webapp.run.covapp.io/';
 //    	var appUrl='https://device-status-webappn.run.covapp.io/';
 		$scope.toggleButton={name:'Disconnect'};
 		$scope.isDisconnected=false;
@@ -27,7 +27,7 @@
 			     }else if(str.indexOf("connected to server")>-1){
 			    	 $scope.isDisconnected=false;
 			    	 $scope.toggleButton={name:'Disconnect'};
-			    	 $scope.greetingText="Success! Connected to server!";
+			    	 $scope.greetingText="Connected to server!";
 			    	 $scope.updateGreeting(false);
 			    	 $scope.$apply();
 			     }

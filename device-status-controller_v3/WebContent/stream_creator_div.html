@@ -1,0 +1,709 @@
+
+<div class="control-group" ng-show="mc.isSet(6)" ng-app="iotapp" ng-controller="appController">
+		
+			<br>
+				
+				<br>
+				<div id="holder">
+				<label class="control-label" for="listUsers">Add Attribute </label>
+				<div class="control-group">
+				          <div ng-cloak ng-show="errors1.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors1" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr class="row">
+						<td width="20%" align="left" nowrap="true"><label class="control-label" for="groupNm">Attribute Name:</label></td>
+						<td width="20%" align="right" nowrap="true"><label class="control-label" for="groupNm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Attribute Description:</label></td>
+						<td width="60%" align="center" nowrap="true"><label class="control-label" for="groupNm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generated Id:</label></td>
+					</tr>
+					</tbody>
+				</table>
+					<div class="form-group" ng-repeat="choice in moreAttrs track by $index">
+							<table>
+								<tbody>
+									<tr>
+										<td width="20%" align="left" nowrap="true"> <input type="text" ng-model="choice.nm"></td>
+										<td width="20%" align="left" nowrap="true"><input type="text" ng-model="choice.dsc"></td>
+										<td width="60%" align="left"  nowrap="true">
+										<div ng-cloak ng-show="success==true">
+											{{choice.wlst}}
+										</div>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+					
+					
+              	</div>
+			
+				<button type="button" class="btn btn-info" ng-click="addAttribute();" >Add More Attributes</button><button type="button" class="btn btn-info" ng-click="ca();" >Add Attribute</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="success==true" class="alert alert-success" role="alert">{{msg}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Event Template </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors2.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors2" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="etNm">Event Template Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="etDsc">Event Template Description:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="gid">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="eventTempNm" id="eventTempNm" class="field-required" type="text" ng-model="eventTempNm"></td>
+						<td align="left"><input name="eventTempNmDesc" id="eventTempNmDesc" class="field-required" type="text" ng-model="eventTempNmDesc"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successET==true">
+								{{etId}}
+							</div>
+						</td>
+					</tr>
+					
+					</tbody>
+				</table>
+              	</div>
+			
+				<button type="button" class="btn btn-info" ng-click="addEventFields();" >Add Event Fields</button><button class="btn btn-info" type="button" ng-click="aet(choices);" >Add EventTemplate</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successET==true" class="alert alert-success" role="alert">{{msgET}}</div>
+						<div ng-cloak ng-show="addAttrFlag==true">
+							<div class="form-group" ng-repeat="choice in choices track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td width="20%" align="left"><label class="control-label" for="groupNm" ng-show="$first" >Event Field Name:</label></td>
+										<td width="20%" align="left"><label class="control-label" for="groupNm" ng-show="$first" >Event Field Type:</label></td>
+									</tr>
+									
+									<tr>
+										<td align="left"> <input type="text" ng-model="choice.id"></td>
+										<td align="left">
+											<select id="choice.desc" ng-model="choice.desc">
+											  <option value="">---Please select---</option> <!-- not selected / blank option -->
+											  <option value="string">String</option>
+											  <option value="integer">Integer</option>
+											   <option value="bool">Boolean</option>
+											   <option value="decimal">Decimal</option>
+											</select>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+			</div>
+			</ul>
+			<br>
+			
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Event Threshold Policy </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors3.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors3" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Threshold Policy Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Event Template Id:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="tpNm" id="tpNm" class="field-required" type="text" ng-model="tpNm"></td>
+						<td align="left"><input name="eventTempId" id="eventTempId" class="field-required" type="text" ng-model="eventTempId"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successETP==true">
+								{{etpId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<table>
+				<tbody>
+					<tr>
+						<td width="50%" align="left"><label class="control-label" for="groupNm">Description:</label></td>
+					</tr>
+					<tr>
+							
+						<td align="left"> <textarea name="threshDesc" id="threshDesc" ng-model="threshDesc"></textarea></td>
+					</tr>
+					<tr>
+					<td><button class="btn btn-info" type="button" ng-click="addConditions();" >Add Conditions</button></td>
+					</tr>
+					</tbody>
+				</table>
+				
+				<div ng-cloak ng-show="addCondsFlag==true">
+							<div class="form-group" ng-repeat="cond in conds track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first" >Condition:</label></td>
+									</tr>
+									
+									<tr>
+										<td align="left"> <textarea name="condit" ng-model="cond.expr"></textarea></td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+              	</div>
+			
+				<button class="btn btn-info" type="button" ng-click="atp(conds);" >Add Threshold Policy</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successETP==true" class="alert alert-success" role="alert">{{msgETP}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!-- Command Template starts-->
+			
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Command Template </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors4.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors4" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Command Template Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Description:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="ctNm" id="ctNm" class="field-required" type="text" ng-model="ctNm"></td>
+						<td align="left"><input name="ctDesc" id="ctDesc" class="field-required" type="text" ng-model="ctDesc"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successCT==true">
+								{{ctId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<table>
+				<tbody>
+					
+					<tr>
+					<td><button class="btn btn-info" type="button" ng-click="addArguments();" >Add Arguments</button></td>
+					</tr>
+					</tbody>
+				</table>
+				
+				<div ng-cloak ng-show="addArgsFlag==true">
+							<div class="form-group" ng-repeat="arg in args track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Name:</label></td>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Description:</label></td>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Type:</label></td>
+										
+									</tr>
+									
+									<tr>
+										<td align="left"> <input name="ctNm" id="ctNm" class="field-required" type="text" ng-model="arg.name"></td>
+										<td align="left"> <input name="ctNm" id="ctNm" class="field-required" type="text" ng-model="arg.description"></td>
+										<td align="left">
+											<select id="arg.type" ng-model="arg.type">
+											  <option value="">---Please select---</option> <!-- not selected / blank option -->
+											  <option value="string">String</option>
+											  <option value="integer">Integer</option>
+											   <option value="bool">Boolean</option>
+											   <option value="decimal">Decimal</option>
+											</select>
+										</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+              	</div>
+			
+				<button type="button" ng-click="act(args);" >Add Command Template</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successCT==true" class="alert alert-success" role="alert">{{msgCT}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!-- Device Template Starts -->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Device Template </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors5.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors5" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Device Template Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Description:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="dtNm" id="dtNm" class="field-required" type="text" ng-model="dtNm"></td>
+						<td align="left"><input name="dtDesc" id="dtDesc" class="field-required" type="text" ng-model="dtDesc"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successDT==true">
+								{{dtId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<table>
+				<tbody>
+					
+					<tr>
+					<td><button type="button" class="btn btn-info" ng-click="addDtAttributes();" >Add Attribute Types</button></td>
+					<td><button type="button" class="btn btn-info" ng-click="addDtEventTemplates();" >Add Event Templates</button></td>
+					<td><button type="button" class="btn btn-info" ng-click="addDtCmdTemplates();" >Add Command Templates</button></td>
+					</tr>
+					</tbody>
+				</table>
+				
+				<div ng-cloak ng-show="dtAttrFlag==true">
+							<div class="form-group" ng-repeat="arg in dtAttTypes track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Attribute ID:</label></td>
+									</tr>
+									
+									<tr>
+										<td align="left"> <input name="dtAttrId" id="dtAttrId" class="field-required" type="text" ng-model="arg.id"></td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+						
+						<div ng-cloak ng-show="dtEtFlag==true">
+							<div class="form-group" ng-repeat="arg in dtEvTemps track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Event Template ID:</label></td>
+									</tr>
+									
+									<tr>
+										<td align="left"> <input name="dtETId" id="dtETId" class="field-required" type="text" ng-model="arg.id"></td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+						
+						<div ng-cloak ng-show="dtCTFlag==true">
+							<div class="form-group" ng-repeat="arg in dtCmdTemps track by $index">
+								<table>
+								<tbody>
+									<tr>
+										<td align="left"><label class="control-label" for="groupNm" ng-show="$first">Command Template ID:</label></td>
+									</tr>
+									
+									<tr>
+										<td align="left"> <input name="dtCTId" id="dtCTId" class="field-required" type="text" ng-model="arg.id"></td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</div>
+						</div>
+						
+              	</div>
+			
+				<button type="button" ng-click="adt(dtAttTypes,dtEvTemps, dtCmdTemps);" >Add Device Template</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successDT==true" class="alert alert-success" role="alert">{{msgDT}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!-- Device starts-->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Device </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors6.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors6" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Device Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Description:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="dNm" id="dNm" class="field-required" type="text" ng-model="dNm"></td>
+						<td align="left"><input name="dDesc" id="dDesc" class="field-required" type="text" ng-model="dDesc"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successD==true">
+								{{dId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<table>
+				<tbody>
+					
+					<tr>
+					<td align="left"><label class="control-label" for="groupNm">Device Template Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="devTempID" id="devTempID" class="field-required" type="text" ng-model="devTempID"></td>
+					</tr>
+					</tbody>
+				</table>
+			
+              	</div>
+			
+				<button type="button" ng-click="ad();" >Add Device</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successD==true" class="alert alert-success" role="alert">{{msgD}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!--Create Application -->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Application </label>
+				<div class="control-group">
+					<div ng-cloak ng-show="errors7.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors7" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Application Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Description:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="aNm" id="aNm" class="field-required" type="text" ng-model="aNm"></td>
+						<td align="left"><input name="aDesc" id="aDesc" class="field-required" type="text" ng-model="aDesc"></td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successA==true">
+								{{aId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				</div>
+			
+				<button type="button" ng-click="aa();" >Add Application</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successA==true" class="alert alert-success" role="alert">{{msgA}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!--Create Event Source -->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Add Event Source </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors8.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors8" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Event Source Name:</label></td>
+						<td width="20%" align="left"></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="esNm" id="esNm" class="field-required" type="text" ng-model="esNm"></td>
+						<td width="20%" align="left"></td>
+						<td width="60%" align="center" nowrap="true">
+							<div ng-cloak ng-show="successES==true">
+								{{esId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				</div>
+			
+				<button type="button" ng-click="aes();" >Add Event Source</button>
+				<div ng-cloak ng-show="successES==true">
+				<table>
+					<tbody>
+						<tr>
+							<td width="20%" align="left"><label class="control-label" for="groupNm">Device Template Id:</label></td>
+							<td width="80%" align="left"><label class="control-label" for="groupNm">Event Template Id:</label></td>
+						</tr>
+						<tr>
+							<td align="left"> <input name="esDTID" id="esDTID" class="field-required" type="text" ng-model="esDTID"></td>
+							<td align="left"> <input name="esETID" id="esETID" class="field-required" type="text" ng-model="esETID"></td>
+						</tr>
+					</tbody>
+				</table>	
+				<button type="button" ng-click="aETEs();" >Assign Events To Event Source</button>
+				<br>
+				<div ng-cloak ng-show="successAETES==true" class="alert alert-success" role="alert">{{msgAETES}}</div>
+				</div>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successES==true" class="alert alert-success" role="alert">{{msgES}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			<!-- Create Stream-->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Create Stream </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors9.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors9" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Stream Name:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Stream Type:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						<td align="left"> <input name="strNm" id="strNm" class="field-required" type="text" ng-model="strNm"></td>
+						<td>
+							<select id="strType" ng-model="strType">
+							  <option value="">---Please select---</option> <!-- not selected / blank option -->
+							  <option value="APPLICATION">APPLICATION</option>
+							  <option value="DEVICE">DEVICE</option>
+							</select>
+						</td>
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successSTR==true">
+								{{strId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				
+				<table>
+				<tbody>
+					<tr>
+						<td align="left"><label class="control-label" for="groupNm">Owner ID:</label></td>
+						<td align="left"><label class="control-label" for="groupNm">Protocol Type:</label></td>
+						
+					</tr>
+					<tr>
+						<td align="left"> <input name="strOid" id="strOid" class="field-required" type="text" ng-model="strOid"></td>
+						<td>
+							<select id="strPType" ng-model="strPType">
+							  <option value="">---Please select---</option> <!-- not selected / blank option -->
+							  <option value="MQTT">MQTT</option>
+							  <option value="HTTPS">HTTPS</option>
+							   <option value="JMS">JMS</option>
+							</select>
+						</td>
+						
+					</tr>
+					</tbody>
+				</table>
+				<table>
+				<tbody>
+					<tr>
+						<td align="left"><label class="control-label" for="groupNm">Protocol Security Type:</label></td>
+						<td align="left"><label class="control-label" for="groupNm">Payload Security Type:</label></td>
+					</tr>
+					<tr>
+						<td>
+							<select id="strPSType" ng-model="strPSType">
+							  <option value="">---Please select---</option> <!-- not selected / blank option -->
+							  <option value="NONE">NONE</option>
+							  <option value="BASIC">BASIC</option>
+							</select>
+						</td>
+						<td>
+							<select id="strPLSType" ng-model="strPLSType">
+							  <option value="">---Please select---</option> <!-- not selected / blank option -->
+							  <option value="NONE">NONE</option>
+							  <option value="ENCRYPTED">ENCRYPTED</option>
+							</select>
+						</td>
+					</tr>
+					</tbody>
+				</table>	
+				<table>
+					<tbody>
+						<tr>
+							<td align="left"><label class="control-label" for="groupNm">Pulling Threads(1-10):</label></td>
+							<td align="left"><label class="control-label" for="groupNm">Sleep Time(100-10000):</label></td>
+							<td align="left"><label class="control-label" for="groupNm">Quota(100-10000):</label></td>
+						</tr>
+						<tr>
+							<td align="left"> <input name="strPT" id="strPT" class="field-required" type="text" ng-model="strPT"></td>
+							<td align="left"> <input name="strST" id="strST" class="field-required" type="text" ng-model="strST"></td>
+							<td align="left"> <input name="strQ" id="strQ" class="field-required" type="text" ng-model="strQ"></td>
+						</tr>
+					</tbody>
+				</table>	
+				
+				</div>
+			
+				<button type="button" class="btn btn-info" ng-click="addStr();" >Add Stream</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successSTR==true" class="alert alert-success" role="alert">
+						
+						<table>
+					<tbody>
+						<tr>
+							<td align="left"><label class="control-label" for="groupNm">Consumer Topic:</label></td>
+							<td align="left"><label class="control-label" for="groupNm">Producer Topic:</label></td>
+							<td align="left"><label class="control-label" for="groupNm">Alert Consumer Topic (Non-Device):</label></td>
+						</tr>
+						<tr>
+							<td align="left"> <input name="ct" id="ct" class="field-required" type="text" ng-model="ct"></td>
+							<td align="left"> <input name="pt" id="pt" class="field-required" type="text" ng-model="pt"></td>
+							<td align="left"> <input name="act" id="act" class="field-required" type="text" ng-model="act"></td>
+						</tr>
+					</tbody>
+				</table>
+					<table>
+					<tbody>
+						<tr>
+							<td align="left"><label class="control-label" for="groupNm">ClientId:</label></td>
+							<td align="left"><label class="control-label" for="groupNm">Password:</label></td>
+					</tr>
+						<tr>
+							<td align="left"> <input name="clId" id="clId" class="field-required" type="text" ng-model="clId"></td>
+							<td align="left"> <input name="clPwd" id="clPwd" class="field-required" type="text" ng-model="clPwd"></td>
+						</tr>
+					</tbody>
+				</table>	
+						{{msgSTR}}
+						<label class="checkbox-inline">
+									<input type="checkbox" name="favoriteColors" ng-model="registerStr" ng-click="regStream();"> Do you want to register this stream?
+								</label>
+								<div ng-cloak ng-show="successRegSTR==true" class="alert alert-success" role="alert">
+								{{registerStreamMsg}}
+								</div>
+						</div>
+						<div ng-cloak ng-show="failureSTR==true" class="alert alert-success" role="alert">
+						{{msgSTR}}
+						</div>
+												
+			</div>
+			</ul>
+			<br>
+			
+			<!--Create ROUTE -->
+			<div id="holder">
+				<label class="control-label" for="listUsers">Create Route </label>
+				<div class="control-group">
+				<div ng-cloak ng-show="errors10.length != 0" class="alert alert-danger" role="alert" style="margin-top:10px">
+								<div ng-repeat="(key, value) in errors10" role="alert">{{value}}</div>
+							</div>
+				<table>
+				<tbody>
+					<tr>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Route Type:</label></td>
+						<td width="20%" align="left"><label class="control-label" for="groupNm">Stream ID:</label></td>
+						<td width="60%" align="center"><label class="control-label" for="groupNm">Generated Id:</label></td>
+					</tr>
+					<tr>
+						
+						<td>
+							<select id="rType" ng-model="rType">
+							  <option value="">---Please select---</option> <!-- not selected / blank option -->
+							  <option value="EVENT">EVENT</option>
+							  <option value="COMMAND">COMMAND</option>
+							</select>
+						</td>
+						<td align="left"> <input name="rstrId" id="rstrId" class="field-required" type="text" ng-model="rstrId"></td>
+						
+						<td width="60%" align="left" nowrap="true">
+							<div ng-cloak ng-show="successR==true">
+								{{rId}}
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				
+				<table>
+				<tbody>
+					<tr>
+						<td align="left"><label class="control-label" for="groupNm">Route Source ID:</label></td>
+						<td align="left"><label class="control-label" for="groupNm">Routing Topic:</label></td>
+						<td align="left"><label class="control-label" for="groupNm">Alert Routing Topic:</label></td>
+						
+					</tr>
+					<tr>
+						<td align="left"> <input name="rsid" id="rsid" class="field-required" type="text" ng-model="rsid"></td>
+						<td align="left"><input name="rTpic" id="rTpic" class="field-required" type="text" ng-model="rTpic"></td>
+						<td align="left"><input name="arTpic" id="arTpic" class="field-required" type="text" ng-model="arTpic"></td>
+						
+					</tr>
+					</tbody>
+				</table>
+					
+				
+				</div>
+			
+				<button type="button" ng-click="addR();" >Add Route</button>
+				
+				<ul>
+				<br>
+						<div ng-cloak ng-show="successR==true" class="alert alert-success" role="alert">{{msgR}}</div>
+												
+			</div>
+			</ul>
+			<br>
+			
+			<br>
+		
+		
+		</div>
+		
+			
+
+	<style>
+	#holder {
+		border: 1px solid #e5e5e5;
+		background: #fafafa;
+		padding: 10px;
+	}
+
+	</style>

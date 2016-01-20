@@ -2,8 +2,7 @@
     iotapp.controller('stompController',function($stomp,$scope) {
         // create a message to display in our view
 		$scope.greetingText;		
-		//var appUrl='http://localhost:8080/device-status-webapp/';
-		var appUrl='https://device-status-webappn.run.covapp.io/';
+        var appUrl='https://device-status-webapp.run.covapp.io/';
 		$scope.toggleButton={name:'Disconnect'};
 		$scope.isDisconnected=false;
 
@@ -24,7 +23,7 @@
 				     }else if(args.indexOf("connected to server")>-1){
 				    	 $scope.isDisconnected=false;
 				    	 $scope.toggleButton={name:'Disconnect'};
-				    	 $scope.greetingText="Success! Connected to server!";
+				    	 $scope.greetingText="Connected to server!";
 				    	 $scope.updateGreeting(false);
 				    	 $scope.$apply();
 				     }

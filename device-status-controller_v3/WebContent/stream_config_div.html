@@ -21,17 +21,23 @@ To add a new config:<br>
 		        </div>
 				<div class="row">
 				  <label class="control-label">Stream ID (needed while getting stream info)</label>
-				  <input type="text"  class="form-control" ng-model="appId">
+				  <div class="column"><input type="text"  class="form-control" ng-model="appId"></div>
+                  <div class="row">&nbsp;</div>
+                  <div class="column">
+                      <input type="submit" value="Get Config" class="btn btn-info" ng-click="getConfig()">
+                      <input type="submit" value="Delete Config" class="btn btn-danger" ng-click="deleteConfig()">
+                  </div>
+                		                 
 		        </div>
+                <div class="row">&nbsp;</div>
 			    <div class="row">
 			      <label class="control-label">Stream Info (only needed to add a Stream Config)</label>
 				  <textarea type="text"  class="form-control large" ng-model="ajaxText"></textarea>
 		        </div>
 		     	<div class="row">&nbsp;</div>
-				<div class="row">
-		                 <input type="submit" value="Get Config" class="btn btn-info" ng-click="getConfig()">
-		                 <input type="submit" value="Post Config" class="btn btn-primary" ng-click="postConfig()">
-		                 <input type="submit" value="Delete Config" class="btn btn-danger" ng-click="deleteConfig()">
+				<div class="row">		                 
+		                 <input type="submit" value="Add New Config" class="btn btn-primary" ng-click="postConfig()">
+		                 
 				</div>
 				<div class="row">&nbsp;</div>
 				<div ng-if="!stompError" class="row alert-success">{{stompResponse}}</div>

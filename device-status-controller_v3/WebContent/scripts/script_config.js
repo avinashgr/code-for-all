@@ -3,7 +3,7 @@
     iotapp.controller('configController',function($scope,$http, $timeout) {
 		// create a message to display in our view
     	$scope.greetingText;
-    	var appUrl='https://device-status-webappn.run.covapp.io/';
+    	var appUrl='https://device-status-webapp.run.covapp.io/';
 		$scope.value = 1;
 		var config ={
 		};
@@ -17,6 +17,10 @@
 			value.success(function(data, status, headers, config) {
 				$scope.greetingText = data;
 				$scope.updateGreeting(false);
+			});
+            value.error(function(error,data) {
+				$scope.greetingText = "The config is not found";
+				$scope.updateGreeting(true);
 			});
 
 		};
