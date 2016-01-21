@@ -1,3 +1,27 @@
+<style>
+p.wordwrap{
+    word-wrap: break-word;
+    max-width:200px;
+}
+  
+@media (max-width: 768px) {
+  .btn-responsive {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn-responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+
+</style>
 <div  class="control-group" ng-show="mc.isSet(4)" ng-app="iotapp" ng-controller="stompSockJSController" >
 		<div class="panel panel-default well">
 		  <div class="panel-body">
@@ -22,12 +46,12 @@ To post message to a topic:<br>
 		        </div>
 		     	<div class="row">&nbsp;</div>
 				<div class="row" >
-		                 <input type="submit" value="Get Data" class="btn btn-info"  ng-click="getMessages()">
-		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="processMessage()">
-		                 <input ng-model="toggleButton.name" name="toggleButton.name" ng-class="{'btn btn-danger':isDisconnected,'btn btn-success':!isDisconnected}" ng-click="toggle()">
+		                 <input type="submit" value="Get Data" class="btn btn-info btn-responsive"  ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary btn-responsive" ng-click="processMessage()">
+		                 <input ng-model="toggleButton.name" name="toggleButton.name" ng-class="{'btn btn-danger btn-responsive':isDisconnected,'btn btn-success btn-responsive':!isDisconnected}" ng-click="toggle()">
 				</div>
 				<div class="row">&nbsp;</div>
-				<div ng-if="!stompError" class="row alert-success">{{stompResponse}}</div>
+				<div ng-if="!stompError" class="row alert-success"><p class="wordwrap">{{stompResponse}}</p></div>
 				<div ng-if="stompError" class="row alert-danger">{{stompResponse}}</div>
 		  </div>
 		</div>

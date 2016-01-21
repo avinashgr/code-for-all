@@ -1,7 +1,7 @@
  iotapp.controller('dialController',function($scope,$http) {
 	var url = 'https://device-status-webapp.run.covapp.io/devicelog';
-	var appID = '68f54ef5-c9ba-4c5b-9f11-c3754bb1dd2b';
-	var topicID = '7c7c81f4-aabb-46f7-a3bf-945df27724b0';
+	var appID = 'fc17295f-a11a-4a36-8ff2-6d23ba7b31d4';
+	var topicID = '98a60468-2091-4929-8b0e-5e401f00711b';
 
 	var humidInterval = 3000;
 	var humidIntervalId;
@@ -44,7 +44,7 @@
 
 		minAngle: -130,
 		maxAngle: 130,
-		maxValue: 100,
+		maxValue: 250,
 
 		transitionMs: 25,
 

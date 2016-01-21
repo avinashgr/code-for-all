@@ -1,3 +1,28 @@
+<style>
+p.wordwrap{
+    word-wrap: break-word;
+    max-width:200px;
+}
+  
+@media (max-width: 768px) {
+  .btn-responsive {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn-responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+
+
+</style>
 <div  class="control-group" ng-show="mc.isSet(2)" ng-app="iotapp" ng-controller="ajaxController" >
 		<div class="panel panel-default well">
 		  <div class="panel-body">
@@ -22,16 +47,15 @@ To post message to a topic:<br>
 		        </div>
 		     	<div class="row">&nbsp;</div>
 				<div class="row">
-		                 <input type="submit" value="Get Data" class="btn btn-info" ng-click="getMessages()">
-		                 <input type="submit" value="Post Message" class="btn btn-primary" ng-click="postMessage()">
-		                 <input type="submit" value="Stop" class="btn btn-danger" ng-click="stopMessages()">
+		                 <input type="submit" value="Get Data" class="btn btn-info btn-responsive" ng-click="getMessages()">
+		                 <input type="submit" value="Post Message" class="btn btn-primary btn-responsive" ng-click="postMessage()">
+		                 <input type="submit" value="Stop" class="btn btn-danger btn-responsive" ng-click="stopMessages()">
 				</div>
 				<div class="row">&nbsp;</div>
-				<div class="row alert-success">
-							<div ng-repeat="f in ajaxResponse">
-							   {{f.content}}
-							</div>
-				</div>
+    			<div ng-repeat="f in ajaxResponse" class="row alert-success">
+                    <p class="wordwrap">{{f.content}}</p>
+              </div>
+				
 		  </div>
 		</div>
 </div>

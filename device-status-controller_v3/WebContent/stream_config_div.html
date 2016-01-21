@@ -1,12 +1,24 @@
 <style>
-html, body, .container {
-  height: 75%;
+p.wordwrap{
+    word-wrap: break-word;
+    max-width:200px;
 }
-textarea {
-  min-height:110px;
+  
+@media (max-width: 768px) {
+  .btn-responsive {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
 }
-.large{
-  height: 70%;
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn-responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
 }
 </style>
 <div  class="control-group" ng-show="mc.isSet(1)"  ng-app="iotapp" ng-controller="configController" >
@@ -24,8 +36,8 @@ To add a new config:<br>
 				  <div class="column"><input type="text"  class="form-control" ng-model="appId"></div>
                   <div class="row">&nbsp;</div>
                   <div class="column">
-                      <input type="submit" value="Get Config" class="btn btn-info" ng-click="getConfig()">
-                      <input type="submit" value="Delete Config" class="btn btn-danger" ng-click="deleteConfig()">
+                      <input type="submit" value="Get Config" class="btn btn-info btn-responsive" ng-click="getConfig()">
+                      <input type="submit" value="Delete Config" class="btn btn-danger btn-responsive" ng-click="deleteConfig()">
                   </div>
                 		                 
 		        </div>
@@ -36,7 +48,7 @@ To add a new config:<br>
 		        </div>
 		     	<div class="row">&nbsp;</div>
 				<div class="row">		                 
-		                 <input type="submit" value="Add New Config" class="btn btn-primary" ng-click="postConfig()">
+		                 <input type="submit" value="Add New Config" class="btn btn-primary btn-responsive" ng-click="postConfig()">
 		                 
 				</div>
 				<div class="row">&nbsp;</div>
