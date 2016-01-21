@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +22,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.covisint.css.portal.utils.MessageValidator;
+import com.covisint.css.portal.utils.StreamConfigUtil;
 import com.covisint.iot.stream.AjaxMQTTStreamClientImpl;
 import com.google.gson.Gson;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 /**
  * Controller for the AJAX requests coming to the webapp
  * @author aranjalkar
  *
  */
-@CrossOrigin({"https://presales-ilab.portal.covapp.io","http://device-status-ui.run.covapp.io","http://my.covapp.io:8080"})
+@CrossOrigin("*")
 @Controller
 public class AjaxDeviceController{
+	@Autowired
+	ServletContext servletContext;
 	final static Logger logger = LoggerFactory.getLogger(AjaxDeviceController.class);
     @Qualifier("ajaxmqttservice")
     @Autowired
     private AjaxMQTTStreamClientImpl mqttClient;
-
+    @PostConstruct
+    public void initStreamConfig(){
+    	new StreamConfigUtil().setPath(servletContext.getRealPath("/WEB-INF/classes/streaminfo.json"));
+    }
 	@RequestMapping(value = "/publish", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void publish(HttpEntity<String> httpEntity) {
@@ -53,22 +63,27 @@ public class AjaxDeviceController{
 		if(!MessageValidator.checkForTopicAndApp(topic, appId)){
 			return createResponse("Invalid topic/app"); 
 		}
-		mqttClient.initializeMQTTConnection(topic,appId);
-		mqttClient.subscribeAndInitializeTopic(topic,appId);
-		Queue<DeviceResponse> deviceMessages = mqttClient.getMessages(topic);
-		List<DeviceResponse> devices = new ArrayList<DeviceResponse>();
-
-		if(null==deviceMessages || deviceMessages.isEmpty()){
-			return createResponse("No message yet");
+		if(mqttClient.initializeMQTTConnection(topic,appId)){
+			return createResponse("Invalid topic/app. Stream may not be configured.");
+		}
+		if(mqttClient.subscribeAndInitializeTopic(topic,appId)){
+			Queue<DeviceResponse> deviceMessages = mqttClient.getMessages(topic);
+			List<DeviceResponse> devices = new ArrayList<DeviceResponse>();
+	
+			if(null==deviceMessages || deviceMessages.isEmpty()){
+				return createResponse("No message yet");
+			}else{
+				for (Iterator<DeviceResponse> iterator = deviceMessages.iterator(); iterator.hasNext();) {
+					DeviceResponse device = (DeviceResponse) iterator.next();
+					logger.info("Devicelog:logging device message:"+device.getContent());
+					devices.add(device);
+				};
+				DeviceResponse[] array = new DeviceResponse[devices.size()];
+				devices.toArray(array);
+				return (array);	
+			}
 		}else{
-			for (Iterator<DeviceResponse> iterator = deviceMessages.iterator(); iterator.hasNext();) {
-				DeviceResponse device = (DeviceResponse) iterator.next();
-				logger.info("Devicelog:logging device message:"+device.getContent());
-				devices.add(device);
-			};
-			DeviceResponse[] array = new DeviceResponse[devices.size()];
-			devices.toArray(array);
-			return (array);	
+			return createResponse("Invalid topic/app. Stream may not be configured.");
 		}
 	}
 	private DeviceResponse[] createResponse(String responseMessage) {

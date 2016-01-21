@@ -1,0 +1,56 @@
+{
+	"id": "7cb0e328-ad7d-f834-0e12-3c052c0558a9",
+	"name": "IOT App",
+	"description": "",
+	"order": [
+		"5abaf050-3b55-fea3-0c5c-bd967ddae3d4",
+		"b84cfe1f-de05-0a0f-a987-c4c6dfb760c4"
+	],
+	"folders": [],
+	"timestamp": 1444069802240,
+	"owner": "",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "5abaf050-3b55-fea3-0c5c-bd967ddae3d4",
+			"headers": "",
+			"url": "https://device-status-webapp.run.covapp.io/publish",
+			"preRequestScript": "",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var tests;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1444070680830,
+			"name": "Post Message To Topic",
+			"description": "            ",
+			"collectionId": "7cb0e328-ad7d-f834-0e12-3c052c0558a9",
+			"responses": [],
+			"rawModeData": "{\r\n    \"appId\": \"fa72d353-3ccb-4776-9529-767f3741454e\",\r\n    \"publishToTopic\":\"f8dbc3f8-6140-471e-b18e-72ffa289f3a8\",\r\n    \"message\":'{\r\n                \"messageId\": \"CommandobDojSequenceNum1158dfg\",\r\n                \"deviceId\": \"f6d4bb54-cb61-47d7-be2e-b8b3c81c3c28\",\r\n                \"commandId\": \"5a59525e-106d-4ac0-9f0c-1dffe8b7a3cb\",\r\n                \"message\": \"eyJjb2xvciI6MSwic3dpdGNoIjoxfQ==\",\r\n                \"encodingType\":\"base64\"\r\n    }'\r\n}"
+		},
+		{
+			"id": "b84cfe1f-de05-0a0f-a987-c4c6dfb760c4",
+			"headers": "",
+			"url": "https://device-status-webapp.run.covapp.io/devicelog?topic=f41d533d-d362-4fc9-aa1d-089000285014&appId=fa72d353-3ccb-4776-9529-767f3741454e",
+			"pathVariables": {},
+			"preRequestScript": "",
+			"method": "GET",
+			"collectionId": "7cb0e328-ad7d-f834-0e12-3c052c0558a9",
+			"data": [],
+			"dataMode": "params",
+			"name": "Get Data from Topic",
+			"description": "            ",
+			"descriptionFormat": "html",
+			"time": 1444069896071,
+			"version": 2,
+			"responses": [],
+			"tests": "var tests;",
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}

@@ -9,11 +9,12 @@ public interface StreamTasks {
 
 	/** 
 	 * Initialize the MQTT client. Connect to the MQTT broker and subscribe to consumerTopic and alertConsumerTopic
+	 * @return 
 	 * 
 	 */
-	void initializeMQTTConnection(String topic, String appId);
+	boolean initializeMQTTConnection(String topic, String appId);
 
-	void subscribeAndInitializeTopic(String topic, String appId);
+	boolean subscribeAndInitializeTopic(String topic, String appId);
 
 	/**
 	 * Callback function when a Device event message is retrieved from subscribed topic. consumerTopic and alertConsumerTopic.

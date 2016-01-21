@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.util.StringUtils;
 /**
  * Overrides the base class to retrieve resolved props and expose them for 
  * further use in other classes
@@ -26,8 +27,13 @@ public class ExposablePropertyPlaceholderConfigurer extends	PropertyPlaceholderC
 		}
 	}
 	
-	public String getProperty(String propertyName){
-		return propertiesMap.get(propertyName);
+	public String getProperty(String propertyName,String defaultValue){
+		String value = propertiesMap.get(propertyName);
+		if(StringUtils.isEmpty(value)){
+			return defaultValue;
+		}else{
+			return value;
+		}
 	}
 
 }

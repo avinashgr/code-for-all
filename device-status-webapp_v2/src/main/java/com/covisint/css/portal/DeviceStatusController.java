@@ -1,4 +1,7 @@
 package com.covisint.css.portal;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.covisint.css.portal.utils.MessageValidator;
+import com.covisint.css.portal.utils.StreamConfigUtil;
 import com.covisint.iot.stream.MQTTStreamClientImpl;
 /**
  * Controller for the requests for STOMP
@@ -19,18 +23,25 @@ import com.covisint.iot.stream.MQTTStreamClientImpl;
 @Controller
 @MessageMapping("/stomp/device")
 public class DeviceStatusController {
+	@Autowired
+	ServletContext servletContext;
 	final static Logger logger = LoggerFactory.getLogger(DeviceStatusController.class);
     @Qualifier("mqttservice")
     @Autowired
     private MQTTStreamClientImpl mqttClient;
-    
+    @PostConstruct
+    public void initStreamConfig(){
+    	new StreamConfigUtil().setPath(servletContext.getRealPath("/WEB-INF/classes/streaminfo.json"));
+    } 
     @MessageMapping("publish")
 	public void publish(DeviceMessage deviceMessage) {
 		logger.debug("Publishing message to device for:"+deviceMessage);
 		if(!MessageValidator.isMessageValid(deviceMessage)){
 			return;
 		}
-		mqttClient.initializeMQTTConnection(deviceMessage.getPublishToTopic(),deviceMessage.getAppId());
+		if(mqttClient.initializeMQTTConnection(deviceMessage.getPublishToTopic(),deviceMessage.getAppId())){
+			return;
+		}
 		mqttClient.publishCommand(deviceMessage,deviceMessage.getAppId());
 	}
     
@@ -44,7 +55,9 @@ public class DeviceStatusController {
 		if(!MessageValidator.checkForTopicAndApp(deviceMessage.getPublishToTopic(),deviceMessage.getAppId())){
 			return; 
 		}
-		mqttClient.initializeMQTTConnection(deviceMessage.getPublishToTopic(),deviceMessage.getAppId());
+		if(mqttClient.initializeMQTTConnection(deviceMessage.getPublishToTopic(),deviceMessage.getAppId())){
+			return;
+		}
 		mqttClient.subscribeAndInitializeTopic(deviceMessage.getPublishToTopic(),deviceMessage.getAppId());
 	}
 

@@ -1,0 +1,109 @@
+[{
+  "id": "33038566-0748-47f4-ae96-075f9c9578a5",
+  "version": "g2wAAAABaAJtAAAADGGYO9oZHSPqAAu8fmEBag==",
+  "creator": "{application}HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF",
+  "creatorAppId": "HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF",
+  "creation": 1449868991613,
+  "realm": "COVSMKT-DEMO",
+  "name": [
+    {
+      "lang": "en",
+      "text": "Stream for Connected Vehicle Device"
+    }
+  ],
+  "streamType": "DEVICE",
+  "protocolType": "MQTT",
+  "protocolSecurityType": "BASIC",
+  "payloadSecurityType": "NONE",
+  "ownerId": "3ba838ef-976d-4c7f-8257-2de88d805940",
+  "consumerTopic": "d01e4156-8754-41a4-832a-01be251e3264",
+  "producerTopic": "294e60e0-5eb0-43ab-89ad-1438a99e4908",
+  "messageProcessorPartitionId": "26",
+  "streamConfiguration": {
+    "logMode": "INFO",
+    "pullingThreads": 5,
+    "sleepTime": 60,
+    "quota": 10
+  },
+  "protocolSecurityAttributes": [
+    {
+      "name": "accountId",
+      "value": "744b82e6-2367-4dad-baef-780aa7c42e11"
+    },
+    {
+      "name": "password",
+      "value": "827cd7aa-f80e-41e7-b368-c57d90770be7"
+    },
+    {
+      "name": "clientId",
+      "value": "36557DF2221648529C2d"
+    },
+    {
+      "name": "port",
+      "value": "8883"
+    },
+    {
+      "name": "host",
+      "value": "mqtt.covapp.io"
+    },
+    {
+      "name": "virtualHost",
+      "value": "/"
+    },
+    {
+      "name": "username",
+      "value": "744b82e6-2367-4dad-baef-780aa7c42e11"
+    }
+  ]
+},
+{
+  "id": "43b33b70-b70a-4f05-b99e-e87ef11f8ee8",
+  "version": "g2wAAAABaAJtAAAADGGYO9obBAnZAAAC/GEBag==",
+  "creator": "{application}HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF",
+  "creatorAppId": "HlNH57h2X9GlUGWTyvztAsXZGFOAHQnF",
+  "creation": 1443719551356,
+  "realm": "COVSMKT-DEMO",
+  "name": [
+    {
+      "lang": "en",
+      "text": "Stream for Device validation Thing_1"
+    }
+  ],
+  "streamType": "DEVICE",
+  "protocolType": "MQTT",
+  "protocolSecurityType": "BASIC",
+  "payloadSecurityType": "NONE",
+  "ownerId": "e33fed31-eb95-4034-91db-590b1a652a6d",
+  "consumerTopic": "29eaa16e-a51c-446c-81b2-2bf75eed4a48",
+  "producerTopic": "8feb3442-8215-4097-bbf0-57933a79e0fb",
+  "protocolSecurityAttributes": [
+    {
+     "name": "accountId",
+      "value": "08c8f8f8-23fd-4c75-989e-4d3117e43194"
+    },
+    {
+      "name": "password",
+      "value": "a9ca2c3d-b196-4250-ad6b-82722310388b"
+    },
+    {
+      "name": "clientId",
+      "value": "DEBffCe8bAd24D088105"
+    },
+    {
+      "name": "port",
+      "value": "8883"
+    },
+    {
+      "name": "host",
+      "value": "mqtt.covapp.io"
+    },
+    {
+      "name": "virtualHost",
+      "value": "/"
+    },
+    {
+      "name": "username",
+      "value": "08c8f8f8-23fd-4c75-989e-4d3117e43194"
+    }
+  ]
+}]

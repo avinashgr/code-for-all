@@ -7,9 +7,16 @@ package com.covisint.iot.stream;
 public class MessageContent {
     private String messageId;
     private String deviceId;
-    private String commandId;
+    public String getEventTemplateId() {
+		return eventTemplateId;
+	}
+	public void setEventTemplateId(String eventTemplateId) {
+		this.eventTemplateId = eventTemplateId;
+	}
+	private String commandId;
     private String message;
     private String encodingType;
+    private String eventTemplateId;
 	public String getMessageId() {
 		return messageId;
 	}

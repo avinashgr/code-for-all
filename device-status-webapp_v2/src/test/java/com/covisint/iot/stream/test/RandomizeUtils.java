@@ -1,7 +1,7 @@
 package com.covisint.iot.stream.test;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 
 public class RandomizeUtils {
 
@@ -13,8 +13,10 @@ public class RandomizeUtils {
 		}
 		
 		public static int randomInt(int size){
-			return RandomUtils.nextInt(size);
+			return RandomUtils.nextInt(size, size);
 		}
-
+		public static int randomInt(int start, int end){
+			return RandomUtils.nextInt(start, end);
+		}
 
 }

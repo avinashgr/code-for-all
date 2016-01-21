@@ -12,19 +12,21 @@
     <!-- Uncomment and your base-package here:
          <context:component-scan
             base-package="org.springframework.samples.web"/>  -->
-         <context:component-scan   base-package="com.covisint.css.portal,com.covisint.iot.stream"/> 
-		 <websocket:message-broker application-destination-prefix="/app">
-		       <websocket:stomp-endpoint path="/stomp/device" allowed-origins="*">
-		            <websocket:sockjs/>
-		       </websocket:stomp-endpoint>
-		       <websocket:simple-broker prefix="/topic"/>
-		 </websocket:message-broker>
-		<bean id="propertyConfigurer"
+         <bean id="propertyConfigurer"
 			class="com.covisint.css.portal.utils.ExposablePropertyPlaceholderConfigurer">
 			<property name="locations">
 				<list>
 					<value>classpath:app.properties</value>
 				</list>
 			</property>
-		</bean>
+		</bean>     
+         <context:component-scan   base-package="com.covisint.iot.stream,com.covisint.css.portal.utils"/>
+
+		 <websocket:message-broker application-destination-prefix="/app">
+		       <websocket:stomp-endpoint path="/stomp/device" allowed-origins="*">
+		            <websocket:sockjs/>
+		       </websocket:stomp-endpoint>
+		       <websocket:simple-broker prefix="/topic"/>
+		 </websocket:message-broker>
+
 </beans>

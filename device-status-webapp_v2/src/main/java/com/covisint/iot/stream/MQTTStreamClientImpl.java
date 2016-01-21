@@ -20,10 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.covisint.css.portal.DeviceMessage;
 import com.covisint.css.portal.DeviceResponse;
 import com.covisint.css.portal.utils.ExposablePropertyPlaceholderConfigurer;
+import com.covisint.css.portal.utils.StreamConfigUtil;
 import com.covisint.iot.stream.vo.StreamVO;
 import com.google.gson.Gson;
 
@@ -38,8 +40,11 @@ public class MQTTStreamClientImpl implements MqttCallback,StreamTasks {
 	final static Logger logger = LoggerFactory.getLogger(MQTTStreamClientImpl.class);
 	private final Map<String, MqttClient> clients =  new HashMap<String, MqttClient>();
 	@Qualifier("propertyConfigurer")
-    @Autowired
+	@Autowired
     private ExposablePropertyPlaceholderConfigurer propertyConfigurer;
+    @Qualifier("streamconfigurator")
+    @Autowired
+    private StreamConfigUtil streamConfigurator;
 	
     private final SimpMessagingTemplate messagingTemplate;
 	/**
@@ -51,27 +56,41 @@ public class MQTTStreamClientImpl implements MqttCallback,StreamTasks {
     	this.messagingTemplate = messagingTemplate;
     }
     
-	public void initializeMQTTConnection(String topic, String appId) {
-    	if(null==clients.get(appId) || !clients.get(appId).isConnected()){
-    		MqttClient mqttClient =connectClient(topic,appId);
-    		if(null!=mqttClient && mqttClient.isConnected()){
-	    		clients.put(appId,mqttClient);
-	    		String alertConsumerTopic = propertyConfigurer.getProperty(appId+".mqtt.alertConsumerTopic");
-	    		subscribeAndInitializeTopic(alertConsumerTopic, appId);
-    		}else{
-    			clients.remove(appId);
-    			logger.info("Unable to connect to client for topic:"+topic+" for appId :"+appId);
-    		}
-    	}
+	public boolean initializeMQTTConnection(String topic, String appId) {
+		if(streamConfigurator.getStreamForStreamId(appId) != null){
+	    	if(null==clients.get(appId) || !clients.get(appId).isConnected()){
+	    		MqttClient mqttClient =connectClient(topic,appId);
+	    		if(null!=mqttClient && mqttClient.isConnected()){
+		    		clients.put(appId,mqttClient);
+		    		String alertConsumerTopic = streamConfigurator.getStreamForStreamId(appId).alertConsumerTopic;
+		    		if(null!=alertConsumerTopic){
+			    		 subscribeAndInitializeTopic(alertConsumerTopic, appId);
+			    	}
+		    		return true;
+	    		}else{
+	    			clients.remove(appId);
+	    			logger.info("Unable to connect to client for topic:"+topic+" for appId :"+appId);
+	    		}
+	    	}
+		}else{
+			//if client found remove
+			clients.remove(appId);
+			logger.error("Configuration for topic:"+topic+" for appId :"+appId+" not found!");
+		}
+		return false;
 	}
 
-	public void subscribeAndInitializeTopic(String topic, String appId) {
-		try {
-			clients.get(appId).subscribe(topic);
-			logger.info("Subcribed to topic successfully:"+topic);
-		} catch (MqttException e) {
-			logger.info("Subscribe failed for topic:"+topic,e);
-		}		
+	public boolean subscribeAndInitializeTopic(String topic, String appId) {
+		boolean subscribeSuccessful=false;
+		if(null!=clients.get(appId)){
+			try {
+				clients.get(appId).subscribe(topic);
+				logger.info("Subcribed to topic successfully:"+topic);
+			} catch (MqttException e) {
+				logger.info("Subscribe failed for topic:"+topic,e);
+			}	
+		}
+		return subscribeSuccessful;
 	}
 
 	public void publishCommand(DeviceMessage info, String appId) {
@@ -121,25 +140,43 @@ public class MQTTStreamClientImpl implements MqttCallback,StreamTasks {
 		}
 
 	}
+	/**
+	 * creates an mqtt client for the topic and app id passed
+	 * if app id is configured in the properties
+	 * @param topic
+	 * @param appId
+	 * @return
+	 */
 	private MqttClient connectClient(String topic,String appId) {
-		MqttClient client;
+		String protocol = propertyConfigurer.getProperty(appId+".mqtt.protocol", "ssl");
+//		String protocol = streamConfigurator.getStreamForStreamId(appId).protocolType;
+		if(null!=streamConfigurator.getStreamForStreamId(appId)){
+    	 return configureClientForApp(appId, protocol);
+		}else{
+			return null;
+		}
+
+	}
+
+	private MqttClient configureClientForApp(String appId, String protocol) {
+		logger.info(String.format("Creating the mqtt client for:%s and protocol:%s",appId,protocol));
 		/**
     	 * Stream connectivity information. All information provided by Covisint Iot Stream service at the 
     	 * time of stream creation for this application.
     	 * ALL OF THESE VARIABLES SHOULD BE REPLACED WITH THE VALUES RETURNED WHEN CREATING YOUR COVISINT APPLICATION STREAM  
     	 */
 		//
-		String protocol = propertyConfigurer.getProperty(appId+".mqtt.protocol");
-    	// the host for the Covisint IoT MQTT broker
-    	String connectionHost = propertyConfigurer.getProperty(appId+".mqtt.connectionHost");
+		MqttClient client;
+		// the host for the Covisint IoT MQTT broker
+    	String connectionHost = streamConfigurator.getStreamForStreamId(appId,"host");
     	// the port of the Covisint IoT MQTT broker
-    	String connectionPort = propertyConfigurer.getProperty(appId+".mqtt.connectionPort");
+    	String connectionPort = streamConfigurator.getStreamForStreamId(appId,"port");
     	// the username required for connecting to the Covisint IoT MQTT broker
-    	String protocolSecurityUsername = propertyConfigurer.getProperty(appId+".mqtt.protocolSecurityUsername");
+    	String protocolSecurityUsername = streamConfigurator.getStreamForStreamId(appId,"username");
     	// the password required for connecting to the Covisint IoT MQTT broker
-    	String protocolSecurityPassword = propertyConfigurer.getProperty(appId+".mqtt.protocolSecurityPassword");
+    	String protocolSecurityPassword = streamConfigurator.getStreamForStreamId(appId,"password");
     	// the clientID required for connecting to the Covisint IoT MQTT broker
-    	String protocolSecurityClientId = propertyConfigurer.getProperty(appId+".mqtt.protocolSecurityClientId");
+    	String protocolSecurityClientId = streamConfigurator.getStreamForStreamId(appId,"clientId");
     	try
     	{  
     	  
@@ -148,8 +185,8 @@ public class MQTTStreamClientImpl implements MqttCallback,StreamTasks {
 	      connectOptions.setUserName(protocolSecurityUsername);
 	      connectOptions.setPassword(protocolSecurityPassword.toCharArray());
 
-	      connectOptions.setConnectionTimeout(Integer.parseInt(propertyConfigurer.getProperty(appId+".mqtt.connectionTimeOut")));
-	      connectOptions.setKeepAliveInterval(Integer.parseInt(propertyConfigurer.getProperty(appId+".mqtt.connectionKeepAlive")));
+	      connectOptions.setConnectionTimeout(Integer.parseInt(propertyConfigurer.getProperty(appId+".mqtt.connectionTimeOut","50")));
+	      connectOptions.setKeepAliveInterval(Integer.parseInt(propertyConfigurer.getProperty(appId+".mqtt.connectionKeepAlive","100")));
 	      connectOptions.setCleanSession(true);
 	      client.connect(connectOptions);
 	      logger.info("client connected for appid: "+appId);
@@ -159,7 +196,6 @@ public class MQTTStreamClientImpl implements MqttCallback,StreamTasks {
     		ex.printStackTrace();
     		return null;
     	}
-
 	}
 	  
 }

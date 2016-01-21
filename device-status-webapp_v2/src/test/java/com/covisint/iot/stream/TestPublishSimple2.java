@@ -16,7 +16,7 @@ public class TestPublishSimple2 {
 		  for(int i=0;i<=100;i++){
 			  System.out.println("Here "+i);
 			  sendSampleMessage(sh); 
-			  Thread.sleep(1000);
+			  Thread.sleep(3000);
 		  }
 	  }catch(InterruptedException ex){
 		  System.out.println("Interrupted");
@@ -33,9 +33,9 @@ private static void sendSampleMessage(MQTTStreamClientImpl sh) {
 	  content.setMessage(createSampleMessage());
 	  content.setEncodingType("base64");
 
-	  deviceMessage.setPublishToTopic("2fe877d2-812a-4e13-82a9-07c49759f266");
+	  deviceMessage.setPublishToTopic("cb829305-3805-48ee-b834-db9ddb75bf43");
 	  deviceMessage.setMessage((new GsonBuilder().disableHtmlEscaping().create()).toJson(content));
-	  deviceMessage.setAppId("68f54ef5-c9ba-4c5b-9f11-c3754bb1dd2b");
+	  deviceMessage.setAppId("6ef69644-d2f3-4fab-97b0-45550fb3e374");
 	  sh.initializeMQTTConnection(deviceMessage.getPublishToTopic(), deviceMessage.getAppId());
 	  sh.publishCommand(deviceMessage,deviceMessage.getAppId());
 }
